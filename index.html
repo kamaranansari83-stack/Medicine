@@ -1,887 +1,609 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>MedEjee — Fixed Complete</title>
-  <meta name="description" content="MedEjee — medicines + patient manager with correct medicine PDF including doctor & medical details.">
-
-  <!-- libs -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js" defer></script>
-
-  <style>
-/* ===========================
-   MedEjee — CSS
-   =========================== */
-
-:root{
-  --brand: #0ea5e9;
-  --brand-dark: #0b83bf;
-  --accent: #07a081;
-  --muted: #546e7a;
-  --bg: #f6fdff;
-  --card: #ffffff;
-  --danger: #ef4444;
-  --radius: 12px;
-  --shadow: 0 10px 30px rgba(6,22,40,0.06);
-  --maxw: 1200px;
-}
-
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#eef6fb);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;color:#062b2b;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-button{font-family:inherit}
-
-.app{max-width:var(--maxw);margin:18px auto;padding:16px;position:relative}
-
-/* Topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand .logo{width:56px;height:56px;border-radius:10px;overflow:hidden;border:1px solid rgba(14,165,233,0.06);background:linear-gradient(180deg,#fff,#f2fbff);display:flex;align-items:center;justify-content:center}
-.brand h1{margin:0;font-size:18px;color:var(--brand-dark)}
-.brand small{display:block;color:var(--muted);font-size:12px}
-.top-actions{display:flex;gap:8px;align-items:center}
-
-/* Buttons */
-.btn{background:var(--brand);color:#fff;border:0;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--brand);border:1px solid rgba(14,165,233,0.08)}
-.btn.small{padding:6px 8px;font-size:13px}
-.btn.secondary{background:#eef8fb;color:var(--brand);border:1px solid rgba(14,165,233,0.08)}
-.btn.danger{background:var(--danger)}
-
-/* Layout */
-.main{display:grid;grid-template-columns:320px 1fr 520px;gap:14px;margin-top:14px}
-@media(max-width:1200px){.main{grid-template-columns:300px 1fr 420px}}
-@media(max-width:980px){.main{grid-template-columns:1fr}}
-.panel{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);position:relative}
-
-/* Patients */
-.patients .head{display:flex;justify-content:space-between;align-items:center}
-.patients input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid #e6f5fb}
-.patients .list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow:auto;padding-right:6px}
-.patient-item{padding:10px;border-radius:10px;border:1px solid #e6f5fb;background:linear-gradient(180deg,#fff,#fbfdff);display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
-.patient-item.active{box-shadow:0 8px 18px rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.14)}
-.patient-meta{font-size:12px;color:var(--muted)}
-.patient-controls{display:flex;gap:6px;align-items:center}
-
-/* Editor */
-.editor .title{display:flex;justify-content:space-between;align-items:center}
-.editor .hero{display:flex;gap:12px;align-items:center;margin-top:12px}
-.hero .image{width:220px;height:110px;border-radius:10px;overflow:hidden;object-fit:cover}
-.grid{display:grid;grid-template-columns:1fr 180px 180px;gap:12px;margin-top:12px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column}
-.field input,.field select,.field textarea{padding:10px;border-radius:8px;border:1px solid #e6f5fb}
-.field textarea{min-height:60px}
-.addmed{margin-top:14px}
-.add-row{display:flex;gap:10px;align-items:center}
-#medInput{flex:1;padding:18px;border-radius:18px;border:1px solid #cfeefb;font-size:18px;height:72px}
-#qtyInput,#priceInput,#formInput{padding:12px;border-radius:12px;border:1px solid #e6f5fb}
-.controls{display:flex;gap:8px;margin-left:auto;align-items:center}
-.suggestions{margin-top:8px;border-radius:10px;padding:6px;background:#fff;border:1px solid #e6f4fb;max-height:260px;overflow:auto}
-.suggestions div{padding:10px;border-radius:8px;cursor:pointer}
-.suggestions div:hover{background:#f0fbff}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.chip{padding:8px 10px;border-radius:999px;background:linear-gradient(180deg,#f0fcf9,#f7fffb);border:1px solid #e6fbf6;color:var(--accent);font-weight:700;cursor:pointer}
-
-/* lists */
-.controls-bar{display:flex;gap:8px;align-items:center;margin-top:8px}
-.list{max-height:420px;overflow:auto;padding:6px;margin-top:8px}
-.list-item{display:flex;justify-content:space-between;align-items:center;padding:10px;margin-bottom:8px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #f1fbff}
-.list-item .left{display:flex;flex-direction:column}
-.list-item .meta{font-size:13px;color:var(--muted)}
-.small-btn{padding:6px 8px;border-radius:8px;border:0;background:#eef6fb;color:var(--brand);font-weight:700;cursor:pointer}
-.small-btn.danger{background:#fff0f0;color:var(--danger)}
-
-/* final */
-.final .top{display:flex;gap:8px;align-items:center}
-.final .options{margin-top:12px;display:flex;flex-direction:column;gap:8px}
-.final .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-
-.help{margin-top:10px;color:var(--muted);font-size:13px}
-
-/* footer */
-.footer{margin-top:16px;text-align:center;color:var(--muted);font-size:13px}
-
-/* responsive tweaks */
-@media(max-width:520px){
-  #medInput{height:64px;padding:12px}
-  .main{padding:6px}
-}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Order</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        .medicine-item {
+            padding: 12px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .medicine-item:last-child {
+            border-bottom: none;
+        }
+        .medicine-info {
+            flex-grow: 1;
+        }
+        .medicine-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .medicine-details {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .btn-group-sm > .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .form-select, .form-control {
+            border-radius: 6px;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #0d6efd;
+        }
+        .order-summary {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        .custom-toast {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .custom-toast.error {
+            background-color: #dc3545;
+        }
+        .toast-message {
+            margin-left: 10px;
+        }
+        .medicine-form-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .form-tab {
+            padding: 8px 15px;
+            margin-right: 5px;
+            background-color: #e9ecef;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        .form-tab.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .copy-btn {
+            position: sticky;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .parse-section {
+            background-color: #f1f8ff;
+            border: 1px dashed #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .parse-title {
+            font-weight: 600;
+            color: #0d6efd;
+            margin-bottom: 10px;
+        }
+        .final-order-item {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-family: monospace;
+            border-left: 3px solid #0d6efd;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-
-    <!-- TOPBAR -->
-    <header class="topbar panel" role="banner">
-      <div class="brand">
-        <div class="logo" id="logoBox" title="Logo">
-          <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="60" height="60" rx="12" fill="#FFFFFF" stroke="#DFF6FF" stroke-width="1"/>
-            <path d="M32 16V48" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"/>
-            <path d="M16 32H48" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h1>MedEjee</h1>
-          <small>Medicine & Patient Manager — Fixed</small>
-        </div>
-      </div>
-
-      <div class="top-actions">
-        <label style="display:inline-flex;align-items:center">
-          <input id="logoInput" type="file" accept="image/*" hidden>
-          <button id="btnLogo" class="btn small ghost">Upload Logo</button>
-        </label>
-        <button id="exportAll" class="btn small">Export</button>
-        <button id="importAll" class="btn small ghost">Import</button>
-        <input id="importFile" type="file" accept="application/json" hidden>
-        <button id="resetBtn" class="btn small danger">Reset</button>
-      </div>
-    </header>
-
-    <!-- MAIN -->
-    <main class="main">
-      <!-- LEFT: Patients -->
-      <aside class="panel patients" aria-labelledby="patientsTitle">
-        <div class="head">
-          <div>
-            <h2 id="patientsTitle">Patients</h2>
-            <div class="patient-meta">Create and manage patient records</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input id="newPatientName" type="text" placeholder="New patient name" style="padding:8px;border-radius:8px;border:1px solid #e6f5fb">
-            <button id="createPatient" class="btn small">＋</button>
-          </div>
-        </div>
-
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <input id="patientSearch" type="text" placeholder="Search patient..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6f5fb">
-          <button id="clearPatientSearch" class="btn small ghost">Clear</button>
-        </div>
-
-        <div id="patientsList" class="list patients-list" role="list" aria-live="polite"></div>
-
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button id="exportPatients" class="btn secondary small">Export</button>
-          <button id="importPatients" class="btn ghost small">Import</button>
-          <button id="delPatient" class="btn small danger">Delete</button>
-        </div>
-
-        <div style="margin-top:10px;color:var(--muted)">Saved patients can be used to create patient PDFs. Empty fields omitted.</div>
-      </aside>
-
-      <!-- CENTER: Medicines -->
-      <section class="panel editor" aria-labelledby="medTitle">
-        <div class="title">
-          <div>
-            <h2 id="medTitle">Medicines — Add & Manage</h2>
-            <div class="meta" id="screenMeta">Working list preserved; copy to Final without removing working items.</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-weight:700;color:var(--brand-dark)" id="invoiceBox">Invoice: <span id="invoiceId">INV-000000</span></div>
-            <div class="meta" id="countsBox">Working: 0 · Final: 0</div>
-          </div>
-        </div>
-
-        <div class="hero">
-          <img class="image" id="heroImage" src="" alt="hero" style="display:none">
-          <div class="cap">
-            <h3>Quick Add — Large search</h3>
-            <div class="muted">Type medicine name (min 2 letters) — suggestions will appear. Same name + form merge quantities.</div>
-          </div>
-        </div>
-
-        <!-- extras: medical + doctor -->
-        <div class="grid" style="margin-top:12px">
-          <div class="field">
-            <label>Medical Shop</label>
-            <input id="medicalName" type="text" placeholder="Kamran Medicos">
-          </div>
-          <div class="field">
-            <label>Doctor Name</label>
-            <input id="doctorName" type="text" placeholder="Dr. Ahmad">
-          </div>
-          <div class="field">
-            <label>Doctor Address</label>
-            <input id="doctorAddress" type="text" placeholder="Doctor address">
-          </div>
-
-          <div class="field">
-            <label>Date</label>
-            <input id="date" type="date">
-          </div>
-          <div class="field">
-            <label>Time</label>
-            <input id="time" type="time">
-          </div>
-          <div class="field">
-            <label>WhatsApp</label>
-            <input id="waNumber" type="text" placeholder="9198XXXXXXXX">
-          </div>
-
-          <div class="field">
-            <label>Invoice ID</label>
-            <div style="display:flex;gap:8px;align-items:center">
-              <div id="invoiceRead" style="padding:10px;border-radius:8px;border:1px solid #e6f5fb">INV-000000</div>
-              <button id="regenInv" class="btn small ghost">Regenerate</button>
+    <div class="container">
+        <h1 class="text-center mb-4">Medicine Order</h1>
+        
+        <!-- Add Medicine Section -->
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-plus-circle me-2"></i>Add Medicine
             </div>
-          </div>
-        </div>
-
-        <!-- Add medicine -->
-        <div class="addmed">
-          <h3 style="margin-bottom:8px">Add Medicine</h3>
-          <div class="add-row" role="group" aria-label="Add medicine">
-            <input id="medInput" type="text" placeholder="Type medicine (min 2 letters) — large search box" autocomplete="off" aria-label="Medicine search">
-            <input id="qtyInput" type="text" placeholder="Quantity (e.g., 1 strip)">
-            <select id="formInput" aria-label="Form">
-              <option>Strip</option><option>Tablet</option><option>Capsule</option><option>Bottle</option><option>Syrup</option><option>Injection</option><option>Other</option>
-            </select>
-            <input id="priceInput" type="number" step="0.01" placeholder="Price (₹)">
-            <div class="controls">
-              <button id="addBtn" class="btn">➕ Add</button>
-              <button id="voiceBtn" class="btn ghost" title="Voice input">🎙</button>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="medicineName" class="form-label">Medicine Name</label>
+                    <input type="text" class="form-control" id="medicineName" placeholder="Enter medicine name">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Medicine Form</label>
+                    <div class="medicine-form-tabs">
+                        <div class="form-tab active" data-form="Tab.">Tab.</div>
+                        <div class="form-tab" data-form="Sp.">Sp.</div>
+                        <div class="form-tab" data-form="Dp.">Dp.</div>
+                        <div class="form-tab" data-form="Cap.">Cap.</div>
+                        <div class="form-tab" data-form="inj.">inj.</div>
+                        <div class="form-tab" data-form="D.">D.</div>
+                        <div class="form-tab" data-form="Other">Other</div>
+                    </div>
+                    <input type="text" class="form-control tab-content active" id="customForm" placeholder="Tab." value="Tab.">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="medicineQuantity" class="form-label">Quantity</label>
+                    <input type="text" class="form-control" id="medicineQuantity" placeholder="e.g., 1 box, 30, 200ml">
+                </div>
+                
+                <button type="button" class="btn btn-primary w-100" id="addMedicineBtn">
+                    <i class="bi bi-plus-lg me-2"></i>Add Medicine
+                </button>
             </div>
-          </div>
-
-          <div id="suggestions" class="suggestions" aria-hidden="true"></div>
-          <div id="chips" class="chips" aria-hidden="false"></div>
-          <div style="margin-top:8px;color:var(--muted)">Shortcuts: '/' focus search, Enter to add, Ctrl/Cmd+S → Medicines PDF</div>
         </div>
-
-        <!-- Working list -->
-        <div class="working" style="margin-top:14px">
-          <h3>Working List</h3>
-          <div class="controls-bar">
-            <input id="workSearch" type="text" placeholder="Search working list...">
-            <button id="workClear" class="btn secondary small">Clear</button>
-            <button id="moveAll" class="btn secondary small">Move All → Final</button>
-            <label style="margin-left:auto"><input id="autoCopyToFinal" type="checkbox"> Auto copy to Final on Add</label>
-          </div>
-          <div id="workList" class="list" aria-live="polite"></div>
+        
+        <!-- Parse Text Section -->
+        <div class="parse-section">
+            <div class="parse-title">
+                <i class="bi bi-magic me-2"></i>Paste Medicine List
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" id="medicineText" rows="4" placeholder="Paste your medicine list here..."></textarea>
+            </div>
+            <button type="button" class="btn btn-primary w-100" id="parseMedicineBtn">
+                <i class="bi bi-magic me-2"></i>Extract Medicines
+            </button>
         </div>
-      </section>
-
-      <!-- RIGHT: Final & actions -->
-      <aside class="panel final" aria-labelledby="finalTitle">
-        <h3 id="finalTitle">Final Order</h3>
-        <div class="top">
-          <input id="finalSearch" type="text" placeholder="Search final order...">
-          <button id="finalClear" class="btn secondary small">Clear</button>
-          <button id="backAll" class="btn secondary small">All → Working</button>
-          <button id="clearFinal" class="btn danger small">Clear Final</button>
+        
+        <!-- Medicine Store Section -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="bi bi-bag me-2"></i>Medicine Store
+            </div>
+            <div class="card-body">
+                <div id="medicineStore">
+                    <p class="text-center text-muted">No medicines added yet</p>
+                </div>
+            </div>
         </div>
-
-        <div id="finalList" class="list" style="margin-top:8px" aria-live="polite"></div>
-
-        <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div id="finalCount" style="font-weight:700">Items: 0</div>
-            <div id="finalTotal" class="muted">Total: ₹0.00</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <label><input id="includeQR" type="checkbox"> Include QR in PDF</label>
-            <label>Signature <input id="signature" type="text" placeholder="Signature (optional)"></label>
-            <label>Manual Total <input id="manualTotal" type="number" step="0.01" placeholder="₹ (optional)"></label>
-          </div>
+        
+        <!-- Final Order Section -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="bi bi-cart-check me-2"></i>Final Order
+            </div>
+            <div class="card-body">
+                <div id="finalOrder">
+                    <p class="text-center text-muted">No medicines selected for order</p>
+                </div>
+                <div class="order-summary" id="orderSummary" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
+                        <span class="fw-bold">Date: <span id="orderDate"></span></span>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="actions" style="margin-top:12px">
-          <button id="copyBtn" class="btn">Copy</button>
-          <button id="shareBtn" class="btn">Share</button>
-          <button id="waBtn" class="btn">WhatsApp</button>
-          <button id="medPdfBtn" class="btn">Medicines PDF</button>
-          <button id="patientPdfBtn" class="btn ghost">Patient PDF</button>
-          <button id="printBtn" class="btn ghost">Print</button>
-        </div>
-
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button id="exportOrder" class="btn secondary">Export Order</button>
-          <button id="importOrder" class="btn secondary">Import Order</button>
-          <input id="importOrderFile" type="file" accept="application/json" hidden>
-        </div>
-
-        <div class="help">Snapshots saved when Medicines PDF is generated. Use Patients list to generate patient PDFs.</div>
-      </aside>
-    </main>
-
-    <footer class="footer">
-      <small>© MedEjee — Local-first. Host images locally for offline use.</small>
-    </footer>
-  </div>
-
-  <!-- SCRIPT -->
-  <script>
-  (function(){
-    'use strict';
-    // Helpers
-    const $ = s => document.querySelector(s);
-    const $$ = s => Array.from(document.querySelectorAll(s));
-    const uid = () => Math.random().toString(36).slice(2,9);
-    const today = () => new Date().toISOString().slice(0,10);
-    const timeNow = () => new Date().toTimeString().slice(0,5);
-    const trim = v => (v===undefined||v===null) ? '' : String(v).trim();
-    function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    // defaults & keys
-    const DEFAULT_SUGG = ["Paracetamol 500mg","Dolo-650","Amoxicillin 250mg","Azithromycin 500mg","Cetirizine 10mg","Pantoprazole 40mg","Metformin 500mg","Ibuprofen 400mg","Vitamin C","ORS Sachet"];
-    const LS_KEYS = { INVOICE:'medejee.invoice.v5', LOGO:'medejee.logo.v5', SUGG:'medejee.suggestions.v5', PATIENTS:'medejee.patients.v5', ORDER:'medejee.order.v5' };
-
-    // load state
-    let state = {
-      invoice: localStorage.getItem(LS_KEYS.INVOICE) || ('MK' + Date.now().toString().slice(-6)),
-      logo: localStorage.getItem(LS_KEYS.LOGO) || null,
-      suggestions: JSON.parse(localStorage.getItem(LS_KEYS.SUGG) || '[]'),
-      patients: JSON.parse(localStorage.getItem(LS_KEYS.PATIENTS) || '[]'),
-      order: JSON.parse(localStorage.getItem(LS_KEYS.ORDER) || JSON.stringify({
-        extras: { medicalName:'', doctorName:'', doctorAddress:'', address:'', waNumber:'', date: today(), time: timeNow() },
-        workItems: [],
-        finalItems: [],
-        history: []
-      }))
-    };
-    state.suggestions = Array.from(new Set([...(state.suggestions||[]), ...DEFAULT_SUGG]));
-
-    // init UI with state
-    $('#invoiceId').textContent = state.invoice;
-    $('#invoiceRead').textContent = state.invoice;
-    if(state.logo){ $('#logoBox').innerHTML = `<img src="${state.logo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`; $('#heroImage').src = state.logo; $('#heroImage').style.display='block'; }
-
-    // sync inputs -> state.extras (function called before operations)
-    function syncExtrasFromInputs(){
-      state.order.extras.medicalName = trim($('#medicalName').value || '');
-      state.order.extras.doctorName = trim($('#doctorName').value || '');
-      state.order.extras.doctorAddress = trim($('#doctorAddress').value || '');
-      state.order.extras.address = trim($('#medicalName').dataset.address || '') || trim($('#medicalName').getAttribute('data-address') || '') || trim($('#medicalName').value || '');
-      // Also update date/time/wa if user changed them
-      state.order.extras.date = $('#date').value || state.order.extras.date || today();
-      state.order.extras.time = $('#time').value || state.order.extras.time || timeNow();
-      state.order.extras.waNumber = trim($('#waNumber').value || '');
-    }
-
-    // persist
-    function persist(){
-      try{
-        localStorage.setItem(LS_KEYS.INVOICE, state.invoice);
-        localStorage.setItem(LS_KEYS.LOGO, state.logo || '');
-        localStorage.setItem(LS_KEYS.SUGG, JSON.stringify(state.suggestions || []));
-        localStorage.setItem(LS_KEYS.PATIENTS, JSON.stringify(state.patients || []));
-        localStorage.setItem(LS_KEYS.ORDER, JSON.stringify(state.order || {}));
-      }catch(e){ console.warn('persist err', e); }
-      renderCounts();
-    }
-
-    // render patients
-    function renderPatients(){
-      const node = $('#patientsList'); node.innerHTML = '';
-      const q = (trim($('#patientSearch').value)||'').toLowerCase();
-      (state.patients || []).forEach(p => {
-        if(q && !(`${p.name} ${p.age||''} ${p.gender||''} ${p.address||''}`).toLowerCase().includes(q)) return;
-        const div = document.createElement('div'); div.className = 'patient-item';
-        if(state.selectedPatientId === p.id) div.classList.add('active');
-        div.dataset.id = p.id;
-        div.innerHTML = `<div><strong>${escapeHtml(p.name)}</strong><div class="patient-meta">${p.age? 'Age: '+escapeHtml(p.age)+' · ':''}${p.gender?escapeHtml(p.gender):''}</div></div>
-                         <div class="patient-controls"><button class="small-btn edit">✎</button><button class="small-btn pdf">📄</button></div>`;
-        div.addEventListener('click', (e)=> {
-          if(e.target.classList.contains('edit') || e.target.classList.contains('pdf')) return;
-          state.selectedPatientId = p.id; renderPatients();
+    </div>
+    
+    <!-- Copy Button -->
+    <div class="copy-btn">
+        <button class="btn btn-primary floating-btn" id="copyOrderBtn" title="Copy Order">
+            <i class="bi bi-clipboard fs-4"></i>
+        </button>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data
+            let medicines = [];
+            let selectedMedicines = [];
+            const currentDate = new Date();
+            const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+            document.getElementById('orderDate').textContent = formattedDate;
+            
+            // Form tab selection
+            const formTabs = document.querySelectorAll('.form-tab');
+            const customFormInput = document.getElementById('customForm');
+            
+            formTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    formTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const formValue = this.getAttribute('data-form');
+                    if (formValue === 'Other') {
+                        customFormInput.value = '';
+                        customFormInput.focus();
+                    } else {
+                        customFormInput.value = formValue;
+                    }
+                });
+            });
+            
+            // Add medicine function
+            document.getElementById('addMedicineBtn').addEventListener('click', function() {
+                const name = document.getElementById('medicineName').value.trim();
+                const form = document.getElementById('customForm').value.trim();
+                const quantity = document.getElementById('medicineQuantity').value.trim();
+                
+                if (!name) {
+                    showToast('Please enter medicine name', 'error');
+                    return;
+                }
+                
+                if (!form) {
+                    showToast('Please select or enter medicine form', 'error');
+                    return;
+                }
+                
+                if (!quantity) {
+                    showToast('Please enter quantity', 'error');
+                    return;
+                }
+                
+                const medicine = {
+                    id: Date.now(),
+                    name: name,
+                    form: form,
+                    quantity: quantity,
+                    selected: false
+                };
+                
+                medicines.push(medicine);
+                renderMedicineStore();
+                
+                // Clear form
+                document.getElementById('medicineName').value = '';
+                document.getElementById('medicineQuantity').value = '';
+                
+                showToast('Medicine added successfully');
+            });
+            
+            // Parse medicine text function
+            document.getElementById('parseMedicineBtn').addEventListener('click', function() {
+                const text = document.getElementById('medicineText').value.trim();
+                if (!text) {
+                    showToast('Please paste medicine list', 'error');
+                    return;
+                }
+                
+                // Parse the text to extract medicines
+                const lines = text.split('\n');
+                let addedCount = 0;
+                
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line) return;
+                    
+                    // Try to match patterns like "Tab. Sumo (1)box"
+                    const formMatch = line.match(/^(Tab\.|Sp\.|Dp\.|Cap\.|inj\.|D\.)\s+(.+?)(?:\s+\((.+)\))?$/i);
+                    
+                    if (formMatch) {
+                        const form = formMatch[1];
+                        const nameAndQuantity = formMatch[2];
+                        const quantityInParentheses = formMatch[3];
+                        
+                        // Try to extract quantity from parentheses or from the end of the name
+                        let name = nameAndQuantity;
+                        let quantity = '';
+                        
+                        if (quantityInParentheses) {
+                            quantity = quantityInParentheses;
+                        } else {
+                            // Try to extract quantity from the end
+                            const quantityMatch = nameAndQuantity.match(/(.+?)\s+(\d+|[\d.]+\s*(?:box|ml|mg|g|kg|ampul|vail|no:\d+))$/i);
+                            if (quantityMatch) {
+                                name = quantityMatch[1];
+                                quantity = quantityMatch[2];
+                            }
+                        }
+                        
+                        if (name && quantity) {
+                            const medicine = {
+                                id: Date.now() + addedCount,
+                                name: name.trim(),
+                                form: form,
+                                quantity: quantity,
+                                selected: false
+                            };
+                            
+                            medicines.push(medicine);
+                            addedCount++;
+                        }
+                    } else {
+                        // Try a different pattern for lines without explicit form
+                        const generalMatch = line.match(/^(.+?)\s+\((.+)\)$/);
+                        if (generalMatch) {
+                            const name = generalMatch[1];
+                            const quantity = generalMatch[2];
+                            
+                            // Try to infer form from name
+                            let form = 'Other';
+                            if (name.toLowerCase().includes('tab') || name.toLowerCase().includes('tablet')) {
+                                form = 'Tab.';
+                            } else if (name.toLowerCase().includes('syrup') || name.toLowerCase().includes('sp.')) {
+                                form = 'Sp.';
+                            } else if (name.toLowerCase().includes('drop') || name.toLowerCase().includes('dp.')) {
+                                form = 'Dp.';
+                            } else if (name.toLowerCase().includes('cap') || name.toLowerCase().includes('capsule')) {
+                                form = 'Cap.';
+                            } else if (name.toLowerCase().includes('inj') || name.toLowerCase().includes('injection')) {
+                                form = 'inj.';
+                            } else if (name.toLowerCase().includes('powder') || name.toLowerCase().includes('d.')) {
+                                form = 'D.';
+                            }
+                            
+                            const medicine = {
+                                id: Date.now() + addedCount,
+                                name: name.trim(),
+                                form: form,
+                                quantity: quantity,
+                                selected: false
+                            };
+                            
+                            medicines.push(medicine);
+                            addedCount++;
+                        }
+                    }
+                });
+                
+                if (addedCount > 0) {
+                    renderMedicineStore();
+                    document.getElementById('medicineText').value = '';
+                    showToast(`Successfully added ${addedCount} medicines`);
+                } else {
+                    showToast('No medicines could be extracted from the text', 'error');
+                }
+            });
+            
+            // Render medicine store
+            function renderMedicineStore() {
+                const storeContainer = document.getElementById('medicineStore');
+                
+                if (medicines.length === 0) {
+                    storeContainer.innerHTML = '<p class="text-center text-muted">No medicines added yet</p>';
+                    return;
+                }
+                
+                // Group medicines by form
+                const groupedMedicines = {};
+                medicines.forEach(medicine => {
+                    if (!groupedMedicines[medicine.form]) {
+                        groupedMedicines[medicine.form] = [];
+                    }
+                    groupedMedicines[medicine.form].push(medicine);
+                });
+                
+                let html = '';
+                
+                Object.keys(groupedMedicines).forEach(form => {
+                    html += `<div class="mb-4">
+                        <div class="section-title">${form}</div>
+                        <div class="list-group">`;
+                    
+                    groupedMedicines[form].forEach(medicine => {
+                        html += `
+                            <div class="medicine-item">
+                                <div class="medicine-info">
+                                    <div class="medicine-name">${medicine.name}</div>
+                                    <div class="medicine-details">${medicine.quantity}</div>
+                                </div>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-primary select-btn ${medicine.selected ? 'active' : ''}" data-id="${medicine.id}">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary edit-btn" data-id="${medicine.id}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger delete-btn" data-id="${medicine.id}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>`;
+                    });
+                    
+                    html += `</div></div>`;
+                });
+                
+                storeContainer.innerHTML = html;
+                
+                // Add event listeners
+                document.querySelectorAll('.select-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const medicine = medicines.find(m => m.id === id);
+                        if (medicine) {
+                            medicine.selected = !medicine.selected;
+                            this.classList.toggle('active');
+                            updateFinalOrder();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        const medicine = medicines.find(m => m.id === id);
+                        if (medicine) {
+                            document.getElementById('medicineName').value = medicine.name;
+                            document.getElementById('customForm').value = medicine.form;
+                            document.getElementById('medicineQuantity').value = medicine.quantity;
+                            
+                            // Set the active tab
+                            formTabs.forEach(tab => {
+                                tab.classList.remove('active');
+                                if (tab.getAttribute('data-form') === medicine.form || 
+                                    (medicine.form !== 'Tab.' && medicine.form !== 'Sp.' && 
+                                     medicine.form !== 'Dp.' && medicine.form !== 'Cap.' && 
+                                     medicine.form !== 'inj.' && medicine.form !== 'D.' && 
+                                     tab.getAttribute('data-form') === 'Other')) {
+                                    tab.classList.add('active');
+                                }
+                            });
+                            
+                            // Remove the medicine
+                            medicines = medicines.filter(m => m.id !== id);
+                            renderMedicineStore();
+                            
+                            // Scroll to top
+                            window.scrollTo(0, 0);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        medicines = medicines.filter(m => m.id !== id);
+                        renderMedicineStore();
+                        updateFinalOrder();
+                        showToast('Medicine removed');
+                    });
+                });
+                
+                updateFinalOrder();
+            }
+            
+            // Update final order
+            function updateFinalOrder() {
+                selectedMedicines = medicines.filter(m => m.selected);
+                const finalOrderContainer = document.getElementById('finalOrder');
+                const orderSummary = document.getElementById('orderSummary');
+                
+                if (selectedMedicines.length === 0) {
+                    finalOrderContainer.innerHTML = '<p class="text-center text-muted">No medicines selected for order</p>';
+                    orderSummary.style.display = 'none';
+                    return;
+                }
+                
+                let html = '';
+                
+                selectedMedicines.forEach(medicine => {
+                    html += `
+                        <div class="final-order-item">
+                            _*${medicine.form} ${medicine.name} (${medicine.quantity})*_
+                        </div>`;
+                });
+                
+                finalOrderContainer.innerHTML = html;
+                document.getElementById('totalItems').textContent = selectedMedicines.length;
+                orderSummary.style.display = 'block';
+            }
+            
+            // Copy order function
+            document.getElementById('copyOrderBtn').addEventListener('click', function() {
+                if (selectedMedicines.length === 0) {
+                    showToast('No medicines selected for order', 'error');
+                    return;
+                }
+                
+                let orderText = `DATE: ${formattedDate}\n`;
+                
+                selectedMedicines.forEach(medicine => {
+                    orderText += `_*${medicine.form} ${medicine.name} (${medicine.quantity})*_\n`;
+                });
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(orderText).then(() => {
+                    showToast('Order copied to clipboard');
+                }).catch(err => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = orderText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Order copied to clipboard');
+                });
+            });
+            
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `custom-toast ${type === 'error' ? 'error' : ''}`;
+                
+                const icon = type === 'error' ? 'bi-exclamation-circle' : 'bi-check-circle';
+                
+                toast.innerHTML = `
+                    <i class="bi ${icon} fs-5"></i>
+                    <span class="toast-message">${message}</span>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 500);
+                }, 3000);
+            }
         });
-        div.querySelector('.edit').addEventListener('click', (ev)=> { ev.stopPropagation(); openPatientEditor(p.id); });
-        div.querySelector('.pdf').addEventListener('click', (ev)=> { ev.stopPropagation(); generatePatientPDF(p.id); });
-        node.appendChild(div);
-      });
-    }
-
-    function createPatient(name){
-      const p = { id: 'P-'+uid(), name: name || ('Patient '+(state.patients.length+1)), age:'', gender:'', address:'', notes:'' };
-      state.patients.unshift(p); persist(); renderPatients(); openPatientEditor(p.id);
-    }
-
-    function openPatientEditor(id){
-      const p = state.patients.find(x=>x.id===id);
-      if(!p) return alert('Patient not found');
-      const overlay = document.createElement('div'); overlay.style.cssText = 'position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:9999';
-      const box = document.createElement('div'); box.style.cssText = 'width:520px;max-width:94%;background:#fff;padding:14px;border-radius:12px';
-      box.innerHTML = `<h3>Edit Patient</h3>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-          <input id="pe_name" placeholder="Full name" value="${escapeHtml(p.name)}">
-          <div style="display:flex;gap:8px"><input id="pe_age" placeholder="Age" value="${escapeHtml(p.age||'')}"><select id="pe_gender"><option value="">Gender</option><option ${p.gender==='Male'?'selected':''}>Male</option><option ${p.gender==='Female'?'selected':''}>Female</option><option ${p.gender==='Other'?'selected':''}>Other</option></select></div>
-          <textarea id="pe_addr" placeholder="Address">${escapeHtml(p.address||'')}</textarea>
-          <textarea id="pe_notes" placeholder="Notes (optional)">${escapeHtml(p.notes||'')}</textarea>
-          <div style="display:flex;gap:8px;justify-content:flex-end"><button id="pe_save" class="btn">Save</button><button id="pe_cancel" class="btn ghost">Cancel</button></div>
-        </div>`;
-      overlay.appendChild(box); document.body.appendChild(overlay);
-      box.querySelector('#pe_cancel').addEventListener('click', ()=> overlay.remove());
-      box.querySelector('#pe_save').addEventListener('click', ()=> {
-        p.name = trim(box.querySelector('#pe_name').value); p.age = trim(box.querySelector('#pe_age').value);
-        p.gender = trim(box.querySelector('#pe_gender').value); p.address = trim(box.querySelector('#pe_addr').value);
-        p.notes = trim(box.querySelector('#pe_notes').value);
-        persist(); renderPatients(); overlay.remove(); alert('Patient saved');
-      });
-    }
-
-    // patient actions
-    $('#createPatient').addEventListener('click', ()=> {
-      const v = trim($('#newPatientName').value);
-      if(v) createPatient(v);
-      else {
-        const nm = prompt('Patient name'); if(nm) createPatient(nm);
-      }
-      $('#newPatientName').value = '';
-    });
-    $('#patientSearch').addEventListener('input', ()=> renderPatients());
-    $('#clearPatientSearch').addEventListener('click', ()=> { $('#patientSearch').value=''; renderPatients(); });
-    $('#delPatient').addEventListener('click', ()=> {
-      if(!state.selectedPatientId) return alert('Select a patient first');
-      if(!confirm('Delete selected patient?')) return;
-      state.patients = (state.patients||[]).filter(p=>p.id!==state.selectedPatientId);
-      state.selectedPatientId = null; persist(); renderPatients();
-    });
-    $('#exportPatients').addEventListener('click', ()=> {
-      const blob = new Blob([JSON.stringify(state.patients,null,2)], { type:'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `medejjee-patients-${Date.now()}.json`; a.click();
-    });
-    $('#importPatients').addEventListener('click', ()=> document.getElementById('importFile').click());
-    $('#importFile').addEventListener('change', (e)=> {
-      const f = e.target.files[0]; if(!f) return;
-      const reader = new FileReader();
-      reader.onload = ()=> {
-        try{
-          const data = JSON.parse(reader.result);
-          if(Array.isArray(data)) state.patients = data.concat(state.patients || []);
-          else if(Array.isArray(data.patients)) state.patients = data.patients.concat(state.patients || []);
-          persist(); renderPatients(); alert('Imported patients');
-        }catch(err){ alert('Invalid file'); }
-      };
-      reader.readAsText(f);
-    });
-
-    // suggestions & chips
-    function fuzzyPool(){ return Array.from(new Set([...(state.suggestions||[]), ...DEFAULT_SUGG])); }
-    function fuzzyFilter(q){
-      if(!q || q.trim().length < 2) return [];
-      const pool = fuzzyPool();
-      const s = q.trim().toLowerCase();
-      const seen = new Set(); let res = [];
-      pool.forEach(it=>{ const t = it.toString(); if(seen.has(t)) return; if(t.toLowerCase().startsWith(s)){ res.push(t); seen.add(t); }});
-      pool.forEach(it=>{ const t = it.toString(); if(seen.has(t)) return; if(t.toLowerCase().includes(s)){ res.push(t); seen.add(t); }});
-      return res.slice(0,12);
-    }
-    function renderSuggestions(){
-      const q = trim($('#medInput').value || '');
-      const c = $('#suggestions'); c.innerHTML = '';
-      if(q.length < 2){ c.setAttribute('aria-hidden','true'); return; }
-      const list = fuzzyFilter(q);
-      if(!list.length){ c.setAttribute('aria-hidden','true'); return; }
-      list.forEach(item=>{
-        const d = document.createElement('div'); d.textContent = item;
-        d.addEventListener('click', ()=> { $('#medInput').value = item; c.setAttribute('aria-hidden','true'); $('#qtyInput').focus(); });
-        c.appendChild(d);
-      });
-      c.setAttribute('aria-hidden','false');
-    }
-    function renderChips(){
-      const n = $('#chips'); n.innerHTML = '';
-      fuzzyPool().slice(0,24).forEach(v=>{
-        const b = document.createElement('button'); b.className='chip'; b.textContent=v;
-        b.addEventListener('click', ()=> { $('#medInput').value = v; $('#qtyInput').value = '1'; $('#addBtn').click(); });
-        n.appendChild(b);
-      });
-    }
-
-    // add/merge logic
-    function normalizeKey(it){ return `${trim(it.name).toLowerCase()}__${trim(it.form).toLowerCase()}`; }
-    function parseNumericQty(q){
-      if(q === undefined || q === null) return null;
-      const s = String(q).replace(/[^\d.-]/g,'');
-      const n = Number(s);
-      return isNaN(n) ? null : n;
-    }
-
-    function addToWork(item){
-      // ensure extras synced before add (so suggestions maybe update)
-      syncExtrasFromInputs();
-      const o = state.order;
-      o.workItems = o.workItems || [];
-      const key = normalizeKey(item);
-      const idx = o.workItems.findIndex(x => normalizeKey(x) === key);
-      if(idx >= 0){
-        const existing = o.workItems[idx];
-        const a = parseNumericQty(existing.qty); const b = parseNumericQty(item.qty);
-        if(a !== null && b !== null){ existing.qty = (a + b).toString(); }
-        else { existing.qty = existing.qty === item.qty ? existing.qty : `${existing.qty} + ${item.qty}`; }
-        existing.price = (item.price !== undefined ? item.price : existing.price);
-        existing.notes = item.notes || existing.notes;
-      } else {
-        o.workItems.unshift(Object.assign({id: 'W-'+uid(), notes:''}, item));
-      }
-      if(item.name) state.suggestions.unshift(item.name);
-      state.suggestions = Array.from(new Set(state.suggestions)).slice(0,200);
-      persist(); renderWorkList(); renderChips(); renderSuggestions();
-      if($('#autoCopyToFinal').checked) addToFinal(item);
-    }
-
-    function addToFinal(item){
-      syncExtrasFromInputs();
-      const o = state.order;
-      o.finalItems = o.finalItems || [];
-      const key = normalizeKey(item);
-      const idx = o.finalItems.findIndex(x => normalizeKey(x) === key);
-      if(idx >= 0){
-        const existing = o.finalItems[idx];
-        const a = parseNumericQty(existing.qty); const b = parseNumericQty(item.qty);
-        if(a !== null && b !== null){ existing.qty = (a + b).toString(); }
-        else { existing.qty = existing.qty === item.qty ? existing.qty : `${existing.qty} + ${item.qty}`; }
-        existing.price = (item.price !== undefined ? item.price : existing.price);
-        existing.notes = item.notes || existing.notes;
-      } else {
-        o.finalItems.unshift(Object.assign({id:'F-'+uid(), notes:''}, item));
-      }
-      persist(); renderFinalList(); updateTotals();
-    }
-
-    // add from UI
-    $('#addBtn').addEventListener('click', ()=> {
-      const name = trim($('#medInput').value); const qty = trim($('#qtyInput').value) || '1'; const form = trim($('#formInput').value) || 'Strip'; const price = $('#priceInput').value ? Number($('#priceInput').value) : 0;
-      if(!name){ alert('Enter medicine name'); $('#medInput').focus(); return; }
-      addToWork({name, form, qty, price});
-      $('#medInput').value=''; $('#qtyInput').value=''; $('#priceInput').value=''; $('#medInput').focus();
-    });
-
-    $('#medInput').addEventListener('input', ()=> renderSuggestions());
-    $('#medInput').addEventListener('keydown', (e)=> { if(e.key==='Enter'){ e.preventDefault(); $('#addBtn').click(); } if(e.key==='ArrowDown'){ const f = $('#suggestions div'); if(f) f.focus(); } });
-    document.addEventListener('click', (e)=> { if(!$('#medInput').contains(e.target) && !$('#suggestions').contains(e.target)) $('#suggestions').setAttribute('aria-hidden','true'); });
-
-    // voice
-    $('#voiceBtn').addEventListener('click', ()=>{
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if(!SR) return alert('Speech recognition not supported (use Chrome/Edge on HTTPS or localhost)');
-      const rec = new SR(); rec.lang='en-IN'; rec.interimResults=false; rec.start();
-      rec.onresult = (ev)=> { $('#medInput').value = ev.results[0][0].transcript; renderSuggestions(); $('#qtyInput').focus(); };
-      rec.onerror = ()=> alert('Voice error');
-    });
-
-    // render work/final lists
-    function renderWorkList(){
-      const node = $('#workList'); node.innerHTML = '';
-      const q = (trim($('#workSearch').value)||'').toLowerCase();
-      (state.order.workItems || []).forEach((it, idx) => {
-        const hay = `${it.name} ${it.form} ${it.qty}`.toLowerCase();
-        if(q && !hay.includes(q)) return;
-        const div = document.createElement('div'); div.className='list-item';
-        const left = document.createElement('div'); left.className='left';
-        left.innerHTML = `<strong>${escapeHtml(it.name)}</strong><div class="meta">${escapeHtml(it.form)} · ${escapeHtml(it.qty)}${it.price? ' · ₹'+Number(it.price).toFixed(2):''}${it.notes? ' · '+escapeHtml(it.notes):''}</div>`;
-        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px'; right.style.alignItems='center';
-        const copyBtn = document.createElement('button'); copyBtn.className='small-btn'; copyBtn.textContent='➤'; copyBtn.title='Copy to final';
-        copyBtn.addEventListener('click', ()=> { addToFinal(Object.assign({}, it)); alert('Copied to final (working preserved)'); });
-        const dupBtn = document.createElement('button'); dupBtn.className='small-btn'; dupBtn.textContent='⧉'; dupBtn.title='Duplicate to work';
-        dupBtn.addEventListener('click', ()=> { addToWork(Object.assign({}, it)); });
-        const editBtn = document.createElement('button'); editBtn.className='small-btn'; editBtn.textContent='✎';
-        editBtn.addEventListener('click', ()=> editWorkItem(idx));
-        right.appendChild(copyBtn); right.appendChild(dupBtn); right.appendChild(editBtn);
-        div.appendChild(left); div.appendChild(right); node.appendChild(div);
-      });
-    }
-
-    function renderFinalList(){
-      const node = $('#finalList'); node.innerHTML = '';
-      const q = (trim($('#finalSearch').value)||'').toLowerCase();
-      (state.order.finalItems || []).forEach((it, idx) => {
-        const hay = `${it.name} ${it.form} ${it.qty}`.toLowerCase();
-        if(q && !hay.includes(q)) return;
-        const div = document.createElement('div'); div.className='list-item';
-        const left = document.createElement('div'); left.className='left';
-        left.innerHTML = `<strong>${escapeHtml(it.name)}</strong><div class="meta">${escapeHtml(it.form)} · ${escapeHtml(it.qty)}${it.price? ' · ₹'+Number(it.price).toFixed(2):''}${it.notes? ' · '+escapeHtml(it.notes):''}</div>`;
-        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px'; right.style.alignItems='center';
-        const backBtn = document.createElement('button'); backBtn.className='small-btn'; backBtn.textContent='⧉'; backBtn.title='Copy to working';
-        backBtn.addEventListener('click', ()=> { addToWork(Object.assign({}, it)); alert('Copied to working (final preserved)'); });
-        const editBtn = document.createElement('button'); editBtn.className='small-btn'; editBtn.textContent='✎';
-        editBtn.addEventListener('click', ()=> editFinalItem(idx));
-        const delBtn = document.createElement('button'); delBtn.className='small-btn danger'; delBtn.textContent='✖';
-        delBtn.addEventListener('click', ()=> { if(confirm('Delete this from final?')){ state.order.finalItems.splice(idx,1); persist(); renderFinalList(); updateTotals(); }});
-        right.appendChild(backBtn); right.appendChild(editBtn); right.appendChild(delBtn);
-        div.appendChild(left); div.appendChild(right); node.appendChild(div);
-      });
-    }
-
-    function editWorkItem(index){
-      const it = state.order.workItems[index];
-      const res = prompt("Edit (name | form | qty | price | notes)", `${it.name} | ${it.form} | ${it.qty} | ${it.price||''} | ${it.notes||''}`);
-      if(!res) return;
-      const parts = res.split('|').map(p=>p && p.trim());
-      it.name = parts[0] || it.name; it.form = parts[1] || it.form; it.qty = parts[2] || it.qty; it.price = parts[3] ? Number(parts[3]) : it.price; it.notes = parts[4] || it.notes;
-      persist(); renderWorkList(); updateTotals();
-    }
-
-    function editFinalItem(index){
-      const it = state.order.finalItems[index];
-      const res = prompt("Edit final (name | form | qty | price | notes)", `${it.name} | ${it.form} | ${it.qty} | ${it.price||''} | ${it.notes||''}`);
-      if(!res) return;
-      const parts = res.split('|').map(p=>p && p.trim());
-      it.name = parts[0] || it.name; it.form = parts[1] || it.form; it.qty = parts[2] || it.qty; it.price = parts[3] ? Number(parts[3]) : it.price; it.notes = parts[4] || it.notes;
-      persist(); renderFinalList(); updateTotals();
-    }
-
-    // move/clear
-    $('#moveAll').addEventListener('click', ()=> { (state.order.workItems||[]).forEach(w => addToFinal(Object.assign({}, w))); persist(); alert('All working items copied to final (working preserved)'); });
-    $('#backAll').addEventListener('click', ()=> { (state.order.finalItems||[]).forEach(f => addToWork(Object.assign({}, f))); persist(); alert('All final items copied to working (final preserved)'); });
-    $('#clearFinal').addEventListener('click', ()=> { if(!state.order.finalItems || !state.order.finalItems.length) return alert('Final empty'); if(confirm('Clear final items?')){ state.order.finalItems = []; persist(); renderFinalList(); updateTotals(); } });
-
-    // searches
-    $('#workSearch').addEventListener('input', ()=> renderWorkList());
-    $('#workClear').addEventListener('click', ()=> { $('#workSearch').value=''; renderWorkList(); });
-    $('#finalSearch').addEventListener('input', ()=> renderFinalList());
-    $('#finalClear').addEventListener('click', ()=> { $('#finalSearch').value=''; renderFinalList(); });
-
-    // totals
-    function updateTotals(){
-      const total = (state.order.finalItems || []).reduce((s,it)=> s + (Number(it.price)||0), 0);
-      $('#finalTotal').textContent = `Total: ₹${Number(total).toFixed(2)}`;
-      $('#finalCount').textContent = `Items: ${(state.order.finalItems||[]).length}`;
-    }
-    function renderCounts(){ $('#countsBox').textContent = `Working: ${(state.order.workItems||[]).length} · Final: ${(state.order.finalItems||[]).length}`; updateTotals(); }
-
-    // export/import entire app
-    $('#exportAll').addEventListener('click', ()=> {
-      const payload = { state };
-      const blob = new Blob([JSON.stringify(payload,null,2)], { type:'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `medejjee-app-${Date.now().toString().slice(0,10)}.json`; a.click();
-    });
-    $('#importAll').addEventListener('click', ()=> $('#importFile').click());
-    $('#importFile').addEventListener('change', async (e)=>{
-      const f = e.target.files[0]; if(!f) return;
-      const txt = await f.text();
-      try{
-        const data = JSON.parse(txt);
-        if(data.state) state = data.state;
-        if(state.invoice) { localStorage.setItem(LS_KEYS.INVOICE, state.invoice); $('#invoiceId').textContent = state.invoice; $('#invoiceRead').textContent = state.invoice; }
-        if(state.logo){ localStorage.setItem(LS_KEYS.LOGO, state.logo); $('#logoBox').innerHTML = `<img src="${state.logo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`; $('#heroImage').src = state.logo; $('#heroImage').style.display='block'; }
-        persist(); renderAll(); alert('Imported app data');
-      }catch(err){ alert('Invalid file'); }
-    });
-    $('#resetBtn').addEventListener('click', ()=> { if(confirm('Reset all data? This clears browser storage.')){ localStorage.clear(); location.reload(); } });
-
-    // logo upload
-    $('#btnLogo').addEventListener('click', ()=> $('#logoInput').click());
-    $('#logoInput').addEventListener('change', (e)=> {
-      const f = e.target.files[0]; if(!f) return;
-      const reader = new FileReader();
-      reader.onload = ()=> {
-        state.logo = reader.result;
-        localStorage.setItem(LS_KEYS.LOGO, state.logo);
-        $('#logoBox').innerHTML = `<img src="${state.logo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px">`;
-        $('#heroImage').src = state.logo; $('#heroImage').style.display = 'block';
-        persist(); alert('Logo saved locally');
-      };
-      reader.readAsDataURL(f);
-    });
-
-    // copy/share/wa/print
-    $('#copyBtn').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareText()).then(()=> alert('Copied to clipboard')));
-    $('#shareBtn').addEventListener('click', async ()=> {
-      const txt = buildShareText();
-      if(navigator.share){ try{ await navigator.share({ title:'Medicine Order', text: txt }); }catch(e){} } else { navigator.clipboard.writeText(txt); alert('Copied'); }
-    });
-    $('#waBtn').addEventListener('click', ()=> {
-      const digits = trim($('#waNumber').value || '').replace(/\D/g,'');
-      const txt = encodeURIComponent(buildShareText());
-      const url = digits.length >= 8 ? `https://wa.me/${digits}?text=${txt}` : `https://wa.me/?text=${txt}`;
-      window.open(url,'_blank');
-    });
-    $('#printBtn').addEventListener('click', ()=> window.print());
-
-    // build share text reads inputs first (ensure sync)
-    function buildShareText(){
-      syncExtrasFromInputs();
-      const ex = state.order.extras; const lines = [];
-      if(ex.medicalName) lines.push(`Medical Shop: ${ex.medicalName}`);
-      if(ex.doctorName) lines.push(`Doctor: ${ex.doctorName}`);
-      if(ex.doctorAddress) lines.push(`Doctor Address: ${ex.doctorAddress}`);
-      if(ex.address) lines.push(`Address: ${ex.address}`);
-      lines.push(`Date: ${ex.date || today()} Time: ${ex.time || timeNow()}`);
-      lines.push(`Invoice: ${state.invoice}`);
-      const rows = (state.order.finalItems||[]).map((f,i)=> `${i+1}. ${f.name} | ${f.form} | ${f.qty}${f.price? ' | ₹'+Number(f.price).toFixed(2):''}`);
-      return `${rows.length? rows.join('\n') : 'No medicines'}\n\n${lines.join('\n')}`;
-    }
-
-    // medicines PDF — IMPORTANT FIX:
-    $('#medPdfBtn').addEventListener('click', ()=> generateMedicinesPDF());
-
-    function generateMedicinesPDF(){
-      // sync extras from inputs BEFORE creating PDF — THIS IS THE CRITICAL FIX
-      syncExtrasFromInputs();
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit:'pt', format:'a4' });
-
-      // header band
-      doc.setFillColor(14,165,233); doc.rect(0,0,doc.internal.pageSize.getWidth(),72,'F');
-      doc.setFontSize(20); doc.setFont('helvetica','bold'); doc.setTextColor(255);
-      const titleX = state.logo ? 110 : 40;
-      const medShop = trim(state.order.extras.medicalName) || '';
-      doc.text(medShop || 'MedEjee Clinic', titleX, 44);
-
-      // add logo
-      if(state.logo){
-        try{ doc.addImage(state.logo, 'PNG', 40, 18, 60, 60); }catch(e){ console.warn('logo add err', e); }
-      }
-
-      // info card
-      doc.setFillColor(245,247,255); doc.roundedRect(36,86,520,110,6,6,'F');
-      doc.setFontSize(10); doc.setTextColor(20);
-      doc.setFont('helvetica','bold'); doc.text('Invoice:', 50, 104); doc.setFont('helvetica','normal'); doc.text(state.invoice, 110, 104);
-      doc.setFont('helvetica','bold'); doc.text('Date:', 50, 122); doc.setFont('helvetica','normal'); doc.text(state.order.extras.date || today(), 90, 122);
-      doc.setFont('helvetica','bold'); doc.text('Time:', 180, 122); doc.setFont('helvetica','normal'); doc.text(state.order.extras.time || timeNow(), 220, 122);
-
-      // include Doctor & Medical details if present (CRITICAL - using synced extras)
-      let infoY = 104;
-      if(trim(state.order.extras.doctorName)){
-        doc.setFont('helvetica','bold'); doc.text('Doctor:', 320, infoY);
-        doc.setFont('helvetica','normal'); doc.text(trim(state.order.extras.doctorName), 380, infoY);
-        infoY += 16;
-      }
-      if(trim(state.order.extras.doctorAddress)){
-        doc.setFont('helvetica','bold'); doc.text('Doctor Address:', 320, infoY);
-        doc.setFont('helvetica','normal'); doc.text(trim(state.order.extras.doctorAddress), 420, infoY);
-        infoY += 16;
-      }
-      // Medical shop label in details block if provided
-      if(medShop){
-        doc.setFont('helvetica','bold'); doc.text('Medical Shop:', 50, 140);
-        doc.setFont('helvetica','normal'); doc.text(medShop, 140, 140);
-      }
-
-      // optional address text (if extras.address exists)
-      if(trim(state.order.extras.address)){
-        const addrLines = doc.splitTextToSize(trim(state.order.extras.address), 460);
-        doc.setFont('helvetica','bold'); doc.text('Address:', 36, 160);
-        doc.setFont('helvetica','normal'); doc.text(addrLines, 36, 176);
-      }
-
-      // Build table rows — from finalItems
-      const body = (state.order.finalItems || []).map(it => [ it.name || '-', it.form || '-', it.qty || '-', it.price ? '₹'+Number(it.price).toFixed(2) : '-', it.notes || '-' ]);
-
-      doc.autoTable({
-        startY: 240,
-        head: [['Medicine','Form','Qty','Price','Notes']],
-        body: body.length ? body : [['—','—','—','—','—']],
-        styles: { font: 'helvetica', fontSize: 11, cellPadding: 6 },
-        headStyles: { fillColor: [21,101,192], textColor: 255 },
-        theme: 'grid',
-        didDrawPage: function(){ doc.setFontSize(9); doc.setTextColor(110); doc.text('MedEjee • Medicine Order', 40, doc.internal.pageSize.getHeight() - 20); }
-      });
-
-      const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY : 260;
-      // totals logic
-      const calcTotal = (state.order.finalItems || []).reduce((s,it)=> s + (Number(it.price)||0), 0);
-      const manualRaw = $('#manualTotal').value;
-      const manual = (manualRaw !== undefined && manualRaw !== '') ? Number(manualRaw) : null;
-      const showTotal = (manual !== null && !isNaN(manual) && manual > 0) ? manual : (calcTotal > 0 ? calcTotal : null);
-      if(showTotal !== null){ doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.text(`Grand Total: ₹${Number(showTotal).toFixed(2)}`, 40, finalY + 30); }
-
-      // signature (only if filled)
-      const signature = trim($('#signature').value || '');
-      if(signature){ doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.text(`Signature: ${signature}`, 40, finalY + (showTotal !== null ? 50 : 30)); }
-
-      // include QR if checked
-      if($('#includeQR').checked){
-        const qr = new QRious({ value: buildShareText(), size: 160 });
-        try{ doc.addImage(qr.toDataURL(), 'PNG', 430, finalY + 10, 120, 120); }catch(e){ console.warn('qr err', e); }
-      }
-
-      // snapshot saved
-      const snapshot = { id: 'SN-' + Date.now().toString().slice(-8), timestamp: new Date().toISOString(), invoice: state.invoice, extras: JSON.parse(JSON.stringify(state.order.extras)), items: JSON.parse(JSON.stringify(state.order.finalItems)) };
-      state.order.history = state.order.history || []; state.order.history.unshift(snapshot); if(state.order.history.length > 300) state.order.history.length = 300;
-      persist();
-
-      doc.save(`Medicines_${state.invoice}.pdf`);
-      alert('Medicines PDF generated — doctor/medical details included if provided.');
-    }
-
-    // patient PDF
-    $('#patientPdfBtn').addEventListener('click', ()=> {
-      const sel = state.selectedPatientId;
-      if(!sel) return alert('Select a patient first (left panel)');
-      generatePatientPDF(sel);
-    });
-
-    function generatePatientPDF(patientId){
-      const p = state.patients.find(x=>x.id===patientId);
-      if(!p) return alert('Patient not found');
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit:'pt', format:'a4' });
-      doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(14,165,233);
-      doc.text('Patient Details', 40, 48);
-      doc.setFontSize(11); doc.setFont('helvetica','normal'); doc.setTextColor(20);
-      let y = 80;
-      if(trim(p.name)){ doc.setFont('helvetica','bold'); doc.text('Name:', 40, y); doc.setFont('helvetica','normal'); doc.text(trim(p.name), 120, y); y += 18; }
-      if(trim(p.age)){ doc.setFont('helvetica','bold'); doc.text('Age:', 40, y); doc.setFont('helvetica','normal'); doc.text(String(p.age), 120, y); y += 18; }
-      if(trim(p.gender)){ doc.setFont('helvetica','bold'); doc.text('Gender:', 40, y); doc.setFont('helvetica','normal'); doc.text(trim(p.gender), 120, y); y += 18; }
-      if(trim(p.address)){ doc.setFont('helvetica','bold'); doc.text('Address:', 40, y); doc.setFont('helvetica','normal'); const lines = doc.splitTextToSize(trim(p.address), 480); doc.text(lines, 120, y); y += (lines.length*14)+6; }
-      if(trim(p.notes)){ doc.setFont('helvetica','bold'); doc.text('Notes:', 40, y); doc.setFont('helvetica','normal'); const lines2 = doc.splitTextToSize(trim(p.notes), 480); doc.text(lines2, 120, y); y += (lines2.length*14)+6; }
-
-      // include final medicines optionally
-      if(state.order.finalItems && state.order.finalItems.length){
-        y += 8; doc.setFont('helvetica','bold'); doc.text('Current Medicines (from final order):', 40, y); y += 16;
-        const body = state.order.finalItems.map((it,i)=> [(i+1)+'. '+it.name, it.form, it.qty, it.price ? '₹'+Number(it.price).toFixed(2) : '-']);
-        doc.autoTable({
-          startY: y,
-          head: [['Medicine','Form','Qty','Price']],
-          body: body,
-          styles:{font:'helvetica',fontSize:10,cellPadding:6},
-          theme:'grid'
-        });
-      }
-
-      doc.save(`Patient_${p.name.replace(/\s+/g,'_') || p.id}.pdf`);
-    }
-
-    // export/import order
-    $('#exportOrder').addEventListener('click', ()=> {
-      const payload = { extras: state.order.extras, finalItems: state.order.finalItems, workItems: state.order.workItems };
-      const blob = new Blob([JSON.stringify(payload,null,2)], { type:'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `medejjee-order-${state.invoice}.json`; a.click();
-    });
-    $('#importOrder').addEventListener('click', ()=> $('#importOrderFile').click());
-    $('#importOrderFile').addEventListener('change', async (e)=> {
-      const f = e.target.files[0]; if(!f) return;
-      const txt = await f.text();
-      try{
-        const data = JSON.parse(txt);
-        if(data.finalItems) state.order.finalItems = (data.finalItems || []).concat(state.order.finalItems || []);
-        if(data.workItems) state.order.workItems = (data.workItems || []).concat(state.order.workItems || []);
-        persist(); renderWorkList(); renderFinalList(); updateTotals(); alert('Order imported');
-      }catch(err){ alert('Invalid order file'); }
-    });
-
-    // invoice regen
-    $('#regenInv').addEventListener('click', ()=> {
-      state.invoice = 'MK' + Date.now().toString().slice(-6);
-      $('#invoiceId').textContent = state.invoice; $('#invoiceRead').textContent = state.invoice;
-      persist();
-    });
-
-    // export final items on med pdf trigger (snapshot saved inside generateMedicinesPDF)
-
-    // keyboard shortcuts
-    window.addEventListener('keydown', (e)=> {
-      if(e.key === '/') { e.preventDefault(); $('#medInput').focus(); }
-      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's'){ e.preventDefault(); $('#medPdfBtn').click(); }
-    });
-
-    // render all components
-    function renderAll(){ renderPatients(); renderChips(); renderSuggestions(); renderWorkList(); renderFinalList(); renderCounts(); }
-    renderAll();
-    setInterval(()=> persist(), 2000);
-
-    // expose debug
-    window.MedEjee = { state, addToWork, addToFinal: (it)=> addToFinal(it), renderAll, generateMedicinesPDF };
-
-  })();
-  </script>
+    </script>
 </body>
 </html>
