@@ -30,12 +30,14 @@
             min-height: 100vh;
             padding-bottom: 100px;
             font-size: 18px; /* Increased base font size */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
         
         .container {
             max-width: 100%;
             padding: 15px;
             margin-bottom: 20px;
+            width: 100%;
         }
         
         h1 {
@@ -52,6 +54,8 @@
             margin-bottom: 20px;
             border: none;
             transition: transform 0.2s;
+            width: 100%;
+            overflow: hidden;
         }
         
         .card:active {
@@ -76,6 +80,7 @@
         
         .card-body {
             padding: 20px;
+            width: 100%;
         }
         
         .form-control, .form-select {
@@ -86,6 +91,7 @@
             transition: all 0.2s;
             height: auto;
             min-height: 60px;
+            width: 100%;
         }
         
         .form-control:focus, .form-select:focus {
@@ -111,6 +117,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
         }
         
         .btn-primary {
@@ -131,12 +138,14 @@
             padding: 10px 12px;
             font-size: 1rem;
             min-height: 45px;
+            width: auto;
         }
         
         .btn-group-sm > .btn {
             padding: 8px 10px;
             font-size: 1rem;
             min-height: 40px;
+            width: auto;
         }
         
         .medicine-item {
@@ -145,6 +154,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         
         .medicine-item:last-child {
@@ -153,12 +163,14 @@
         
         .medicine-info {
             flex-grow: 1;
+            min-width: 0; /* Allows text to truncate if needed */
         }
         
         .medicine-name {
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 1.2rem;
+            word-wrap: break-word; /* Prevents long words from overflowing */
         }
         
         .medicine-details {
@@ -179,6 +191,7 @@
             right: 20px;
             left: 20px;
             z-index: 1050;
+            width: calc(100% - 40px); /* Full width with padding */
         }
         
         .custom-toast {
@@ -192,6 +205,7 @@
             align-items: center;
             animation: slideIn 0.3s ease-out;
             font-size: 1.1rem;
+            width: 100%;
         }
         
         @keyframes slideIn {
@@ -211,6 +225,7 @@
         
         .toast-message {
             margin-left: 12px;
+            word-wrap: break-word; /* Prevents long text from overflowing */
         }
         
         .medicine-form-tabs {
@@ -220,6 +235,7 @@
             padding-bottom: 8px;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            width: 100%;
         }
         
         .medicine-form-tabs::-webkit-scrollbar {
@@ -238,6 +254,7 @@
             transition: all 0.2s;
             min-width: 80px;
             text-align: center;
+            flex-shrink: 0; /* Prevents tabs from shrinking */
         }
         
         .form-tab:active {
@@ -285,6 +302,7 @@
             border-radius: 12px;
             padding: 20px;
             margin-top: 20px;
+            width: 100%;
         }
         
         .parse-title {
@@ -302,6 +320,8 @@
             font-family: monospace;
             border-left: 4px solid var(--primary-color);
             font-size: 1.2rem;
+            width: 100%;
+            word-wrap: break-word; /* Prevents long text from overflowing */
         }
         
         .patient-card {
@@ -310,6 +330,7 @@
             box-shadow: var(--card-shadow);
             margin-bottom: 20px;
             overflow: hidden;
+            width: 100%;
         }
         
         .patient-header {
@@ -319,20 +340,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         
         .patient-name {
             font-weight: 700;
             font-size: 1.4rem;
+            word-wrap: break-word; /* Prevents long names from overflowing */
         }
         
         .patient-details {
             padding: 20px;
+            width: 100%;
         }
         
         .patient-info-row {
             display: flex;
             margin-bottom: 12px;
+            width: 100%;
         }
         
         .patient-info-label {
@@ -340,10 +365,12 @@
             width: 120px;
             color: var(--secondary-color);
             font-size: 1.1rem;
+            flex-shrink: 0; /* Prevents label from shrinking */
         }
         
         .patient-medicines {
             padding: 0 20px 20px;
+            width: 100%;
         }
         
         .patient-medicine-item {
@@ -352,6 +379,7 @@
             align-items: center;
             padding: 12px 0;
             border-bottom: 1px solid #e9ecef;
+            width: 100%;
         }
         
         .patient-medicine-item:last-child {
@@ -367,6 +395,7 @@
             border-radius: 6px;
             min-height: auto;
             height: auto;
+            width: auto;
         }
         
         .download-btn:hover {
@@ -378,6 +407,7 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
+            width: 100%;
         }
         
         .quantity-input {
@@ -395,6 +425,7 @@
             justify-content: center;
             padding: 0;
             font-size: 1.4rem;
+            flex-shrink: 0; /* Prevents buttons from shrinking */
         }
         
         .add-patient-btn {
@@ -417,6 +448,8 @@
         
         .modal-content {
             border-radius: 12px;
+            width: 100%;
+            max-width: 100%;
         }
         
         .modal-header {
@@ -424,6 +457,7 @@
             color: white;
             border-radius: 12px 12px 0 0;
             padding: 20px;
+            width: 100%;
         }
         
         .modal-title {
@@ -433,10 +467,12 @@
         
         .modal-body {
             padding: 25px;
+            width: 100%;
         }
         
         .form-floating {
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .form-floating > label {
@@ -451,6 +487,7 @@
             padding: 25px;
             margin-top: 20px;
             position: relative;
+            width: 100%;
         }
         
         .prescription-header {
@@ -458,6 +495,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .prescription-title {
@@ -480,6 +518,7 @@
         
         .prescription-patient {
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .prescription-patient-info {
@@ -487,10 +526,12 @@
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .prescription-medicines {
             margin-top: 25px;
+            width: 100%;
         }
         
         .prescription-medicine {
@@ -500,6 +541,7 @@
             padding-bottom: 15px;
             border-bottom: 1px dashed #ccc;
             font-size: 1.2rem;
+            width: 100%;
         }
         
         .prescription-medicine:last-child {
@@ -513,6 +555,7 @@
             text-align: center;
             font-size: 1.1rem;
             color: var(--secondary-color);
+            width: 100%;
         }
         
         .hidden {
@@ -522,6 +565,7 @@
         .search-container {
             position: relative;
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .search-icon {
@@ -535,6 +579,7 @@
         
         .search-input {
             padding-left: 45px;
+            width: 100%;
         }
         
         /* New styles for the requested features */
@@ -545,6 +590,7 @@
             padding: 25px;
             margin-top: 20px;
             text-align: center;
+            width: 100%;
         }
         
         .voice-btn {
@@ -593,6 +639,7 @@
             border-radius: 8px;
             margin-top: 15px;
             min-height: 60px;
+            width: 100%;
         }
         
         .clear-btn:hover {
@@ -604,12 +651,14 @@
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 15px;
+            width: 100%;
         }
         
         .form-tab-container {
             position: relative;
             margin-right: 8px;
             margin-bottom: 8px;
+            flex-shrink: 0; /* Prevents containers from shrinking */
         }
         
         .form-tab-delete {
@@ -644,6 +693,7 @@
             align-items: center;
             min-width: 80px;
             justify-content: center;
+            flex-shrink: 0; /* Prevents button from shrinking */
         }
         
         .form-tab-add i {
@@ -663,6 +713,7 @@
             transition: all 0.2s;
             min-width: 100px;
             text-align: center;
+            flex-shrink: 0; /* Prevents tab from shrinking */
         }
         
         .no-form-tab.active {
@@ -675,6 +726,7 @@
             flex-wrap: wrap;
             margin-top: 15px;
             gap: 10px;
+            width: 100%;
         }
         
         .quantity-preset {
@@ -686,6 +738,7 @@
             cursor: pointer;
             white-space: nowrap;
             font-weight: 500;
+            flex-shrink: 0; /* Prevents presets from shrinking */
         }
         
         .quantity-preset:hover {
@@ -706,6 +759,7 @@
             cursor: pointer;
             transition: all 0.2s;
             border-left: 5px solid var(--primary-color);
+            width: 100%;
         }
         
         .patient-summary:active {
@@ -718,6 +772,7 @@
             font-size: 1.4rem;
             color: var(--primary-color);
             margin-bottom: 8px;
+            word-wrap: break-word; /* Prevents long names from overflowing */
         }
         
         .patient-summary-details {
@@ -726,6 +781,7 @@
             font-size: 1.1rem;
             color: var(--secondary-color);
             align-items: center;
+            width: 100%;
         }
         
         .patient-summary-medicines {
@@ -737,6 +793,7 @@
         .patient-actions {
             display: flex;
             gap: 8px;
+            flex-shrink: 0; /* Prevents action buttons from shrinking */
         }
         
         .patient-detail-modal {
@@ -771,10 +828,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         
         .patient-detail-body {
             padding: 25px;
+            width: 100%;
         }
         
         .patient-detail-row {
@@ -783,12 +842,14 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #e9ecef;
             font-size: 1.1rem;
+            width: 100%;
         }
         
         .patient-detail-label {
             font-weight: 700;
             width: 130px;
             color: var(--secondary-color);
+            flex-shrink: 0; /* Prevents label from shrinking */
         }
         
         .disease-tag {
@@ -804,6 +865,7 @@
         .disease-input-container {
             display: flex;
             margin-top: 15px;
+            width: 100%;
         }
         
         .disease-input {
@@ -824,12 +886,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0; /* Prevents button from shrinking */
         }
         
         textarea.form-control {
             min-height: 120px;
             padding: 15px;
             font-size: 1.1rem;
+            width: 100%;
+            resize: none; /* Prevents manual resizing */
+        }
+        
+        .row {
+            width: 100%;
+            margin: 0;
+        }
+        
+        .col-4 {
+            padding: 0 5px;
+            width: 33.333333%;
         }
         
         /* Mobile-specific optimizations */
@@ -938,6 +1013,78 @@
             
             .voice-status {
                 font-size: 1.1rem;
+            }
+            
+            .quantity-presets {
+                gap: 8px;
+            }
+            
+            .quantity-preset {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .form-tabs-container {
+                margin-bottom: 12px;
+            }
+            
+            .disease-tag {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .form-tab, .no-form-tab, .form-tab-add {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+                min-width: 60px;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .medicine-name {
+                font-size: 1rem;
+            }
+            
+            .medicine-details {
+                font-size: 0.85rem;
+            }
+            
+            .patient-summary-name {
+                font-size: 1.2rem;
+            }
+            
+            .patient-summary-details {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                font-size: 0.9rem;
+                padding: 12px;
+            }
+            
+            .form-control, .form-select {
+                font-size: 0.9rem;
+                padding: 12px;
+                min-height: 45px;
+            }
+            
+            .toast-message {
+                font-size: 1rem;
+            }
+            
+            .voice-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .voice-status {
+                font-size: 1rem;
             }
         }
     </style>
