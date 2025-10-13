@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Medicine Prescription</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -28,25 +28,28 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
+            font-size: 18px; /* Increased base font size */
         }
         
         .container {
             max-width: 100%;
-            padding: 10px;
+            padding: 15px;
             margin-bottom: 20px;
         }
         
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
             color: var(--primary-color);
+            text-align: center;
+            font-weight: bold;
         }
         
         .card {
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: none;
             transition: transform 0.2s;
         }
@@ -59,26 +62,30 @@
             background-color: var(--primary-color);
             color: white;
             font-weight: bold;
-            border-radius: 10px 10px 0 0 !important;
-            padding: 12px 15px;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 18px 20px;
             display: flex;
             align-items: center;
+            font-size: 1.3rem;
         }
         
         .card-header i {
-            margin-right: 8px;
+            margin-right: 10px;
+            font-size: 1.5rem;
         }
         
         .card-body {
-            padding: 15px;
+            padding: 20px;
         }
         
         .form-control, .form-select {
-            border-radius: 6px;
-            border: 1px solid #ced4da;
-            padding: 10px 12px;
-            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ced4da;
+            padding: 15px;
+            font-size: 1.1rem;
             transition: all 0.2s;
+            height: auto;
+            min-height: 60px;
         }
         
         .form-control:focus, .form-select:focus {
@@ -86,12 +93,24 @@
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
         
+        .form-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
         .btn {
-            border-radius: 6px;
-            padding: 10px 15px;
-            font-weight: 500;
+            border-radius: 8px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.2s;
             touch-action: manipulation;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn-primary {
@@ -109,16 +128,19 @@
         }
         
         .btn-outline-primary, .btn-outline-secondary, .btn-outline-danger {
-            padding: 6px 10px;
+            padding: 10px 12px;
+            font-size: 1rem;
+            min-height: 45px;
         }
         
         .btn-group-sm > .btn {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
+            padding: 8px 10px;
+            font-size: 1rem;
+            min-height: 40px;
         }
         
         .medicine-item {
-            padding: 12px;
+            padding: 18px;
             border-bottom: 1px solid #e9ecef;
             display: flex;
             justify-content: space-between;
@@ -134,19 +156,20 @@
         }
         
         .medicine-name {
-            font-weight: 500;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
         }
         
         .medicine-details {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--secondary-color);
         }
         
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
             color: var(--primary-color);
         }
         
@@ -154,28 +177,30 @@
             position: fixed;
             top: 20px;
             right: 20px;
+            left: 20px;
             z-index: 1050;
         }
         
         .custom-toast {
             background-color: var(--success-color);
             color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             animation: slideIn 0.3s ease-out;
+            font-size: 1.1rem;
         }
         
         @keyframes slideIn {
             from {
-                transform: translateX(100%);
+                transform: translateY(-20px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
@@ -185,14 +210,14 @@
         }
         
         .toast-message {
-            margin-left: 10px;
+            margin-left: 12px;
         }
         
         .medicine-form-tabs {
             display: flex;
             overflow-x: auto;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
@@ -202,15 +227,17 @@
         }
         
         .form-tab {
-            padding: 8px 15px;
-            margin-right: 5px;
+            padding: 12px 18px;
+            margin-right: 8px;
             background-color: #e9ecef;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             user-select: none;
             transition: all 0.2s;
+            min-width: 80px;
+            text-align: center;
         }
         
         .form-tab:active {
@@ -232,19 +259,19 @@
         
         .copy-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
         }
         
         .floating-btn {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: all 0.2s;
         }
         
@@ -254,73 +281,76 @@
         
         .parse-section {
             background-color: #f1f8ff;
-            border: 1px dashed var(--primary-color);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
         }
         
         .parse-title {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         
         .final-prescription-item {
             background-color: var(--light-bg);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 12px;
             font-family: monospace;
-            border-left: 3px solid var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+            font-size: 1.2rem;
         }
         
         .patient-card {
             background-color: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             overflow: hidden;
         }
         
         .patient-header {
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 15px;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .patient-name {
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.4rem;
         }
         
         .patient-details {
-            padding: 15px;
+            padding: 20px;
         }
         
         .patient-info-row {
             display: flex;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
         
         .patient-info-label {
-            font-weight: 500;
-            width: 100px;
+            font-weight: 600;
+            width: 120px;
             color: var(--secondary-color);
+            font-size: 1.1rem;
         }
         
         .patient-medicines {
-            padding: 0 15px 15px;
+            padding: 0 20px 20px;
         }
         
         .patient-medicine-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #e9ecef;
         }
         
@@ -332,84 +362,94 @@
             background-color: var(--success-color);
             border-color: var(--success-color);
             color: white;
-            padding: 5px 10px;
-            font-size: 0.9rem;
-            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 6px;
+            min-height: auto;
+            height: auto;
         }
         
         .download-btn:hover {
             background-color: #218838;
-            border-color: #1e7e34;
+            border-color: #1e7e34';
         }
         
         .quantity-selector {
             display: flex;
             align-items: center;
-            margin-top: 5px;
+            margin-top: 10px;
         }
         
         .quantity-input {
-            width: 80px;
-            margin: 0 5px;
+            width: 120px;
+            margin: 0 8px;
             text-align: center;
         }
         
         .quantity-btn {
-            width: 30px;
-            height: 30px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0;
-            font-size: 1rem;
+            font-size: 1.4rem;
         }
         
         .add-patient-btn {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
+            bottom: 110px;
+            right: 25px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             background-color: var(--primary-color);
             color: white;
             border: none;
-            font-size: 1.5rem;
+            font-size: 2rem;
             z-index: 99;
         }
         
         .modal-content {
-            border-radius: 10px;
+            border-radius: 12px;
         }
         
         .modal-header {
             background-color: var(--primary-color);
             color: white;
-            border-radius: 10px 10px 0 0;
-        }
-        
-        .modal-body {
+            border-radius: 12px 12px 0 0;
             padding: 20px;
         }
         
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
         .form-floating {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-floating > label {
             color: var(--secondary-color);
+            font-size: 1.1rem;
+            padding: 15px;
         }
         
         .medicine-prescription {
             background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
             position: relative;
         }
         
@@ -417,47 +457,49 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .prescription-title {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary-color);
+            font-size: 1.4rem;
         }
         
         .prescription-logo {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: var(--primary-color);
         }
         
         .prescription-date {
             text-align: right;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: var(--secondary-color);
         }
         
         .prescription-patient {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .prescription-patient-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
         .prescription-medicines {
-            margin-top: 20px;
+            margin-top: 25px;
         }
         
         .prescription-medicine {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 1px dashed #ccc;
+            font-size: 1.2rem;
         }
         
         .prescription-medicine:last-child {
@@ -467,9 +509,9 @@
         }
         
         .prescription-footer {
-            margin-top: 20px;
+            margin-top: 25px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: var(--secondary-color);
         }
         
@@ -479,28 +521,29 @@
         
         .search-container {
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .search-icon {
             position: absolute;
-            left: 10px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--secondary-color);
+            font-size: 1.3rem;
         }
         
         .search-input {
-            padding-left: 35px;
+            padding-left: 45px;
         }
         
         /* New styles for the requested features */
         .voice-section {
             background-color: #f1f8ff;
-            border: 1px dashed var(--primary-color);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
             text-align: center;
         }
         
@@ -509,13 +552,13 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 1.5rem;
+            margin: 0 auto 15px;
+            font-size: 2rem;
         }
         
         .voice-btn.recording {
@@ -528,7 +571,7 @@
                 box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+                box-shadow: 0 0 0 15px rgba(220, 53, 69, 0);
             }
             100% {
                 box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
@@ -536,18 +579,20 @@
         }
         
         .voice-status {
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             color: var(--secondary-color);
+            font-weight: 600;
         }
         
         .clear-btn {
             background-color: var(--danger-color);
             border-color: var(--danger-color);
             color: white;
-            padding: 5px 10px;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            margin-top: 10px;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 60px;
         }
         
         .clear-btn:hover {
@@ -558,60 +603,66 @@
         .form-tabs-container {
             display: flex;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .form-tab-container {
             position: relative;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            margin-right: 8px;
+            margin-bottom: 8px;
         }
         
         .form-tab-delete {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -8px;
+            right: -8px;
             background-color: var(--danger-color);
             color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            border: 1px solid white;
+            border: 2px solid white;
+            font-weight: bold;
         }
         
         .form-tab-add {
             background-color: var(--success-color);
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 8px 15px;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            border-radius: 25px;
+            padding: 12px 18px;
+            margin-right: 8px;
+            margin-bottom: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
+            min-width: 80px;
+            justify-content: center;
         }
         
         .form-tab-add i {
-            margin-right: 5px;
+            margin-right: 6px;
+            font-size: 1.2rem;
         }
         
         .no-form-tab {
             background-color: #e9ecef;
-            border-radius: 20px;
-            padding: 8px 15px;
-            margin-right: 5px;
+            border-radius: 25px;
+            padding: 12px 18px;
+            margin-right: 8px;
             cursor: pointer;
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             user-select: none;
             transition: all 0.2s;
+            min-width: 100px;
+            text-align: center;
         }
         
         .no-form-tab.active {
@@ -622,18 +673,19 @@
         .quantity-presets {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 10px;
-            gap: 5px;
+            margin-top: 15px;
+            gap: 10px;
         }
         
         .quantity-preset {
             background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 15px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
+            border: 2px solid #ced4da;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
             cursor: pointer;
             white-space: nowrap;
+            font-weight: 500;
         }
         
         .quantity-preset:hover {
@@ -647,13 +699,13 @@
         }
         
         .patient-summary {
-            padding: 12px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 12px;
             background-color: #f8f9fa;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.2s;
-            border-left: 3px solid var(--primary-color);
+            border-left: 5px solid var(--primary-color);
         }
         
         .patient-summary:active {
@@ -662,28 +714,29 @@
         }
         
         .patient-summary-name {
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.4rem;
             color: var(--primary-color);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
         
         .patient-summary-details {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: var(--secondary-color);
+            align-items: center;
         }
         
         .patient-summary-medicines {
-            font-size: 0.8rem;
-            margin-top: 5px;
+            font-size: 1rem;
+            margin-top: 10px;
             color: var(--secondary-color);
         }
         
         .patient-actions {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
         
         .patient-detail-modal {
@@ -697,12 +750,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 20px;
         }
         
         .patient-detail-content {
             background-color: white;
-            border-radius: 10px;
+            border-radius: 12px;
             max-width: 500px;
             width: 100%;
             max-height: 80vh;
@@ -713,99 +766,114 @@
         .patient-detail-header {
             background-color: var(--primary-color);
             color: white;
-            padding: 15px;
-            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .patient-detail-body {
-            padding: 20px;
+            padding: 25px;
         }
         
         .patient-detail-row {
             display: flex;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #e9ecef;
+            font-size: 1.1rem;
         }
         
         .patient-detail-label {
-            font-weight: 600;
-            width: 120px;
+            font-weight: 700;
+            width: 130px;
             color: var(--secondary-color);
         }
         
         .disease-tag {
             display: inline-block;
             background-color: #e9ecef;
-            border-radius: 15px;
-            padding: 3px 10px;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
         
         .disease-input-container {
             display: flex;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .disease-input {
             flex-grow: 1;
-            border-radius: 20px 0 0 20px;
+            border-radius: 25px 0 0 25px;
             border-right: none;
+            font-size: 1.1rem;
+            height: auto;
+            min-height: 50px;
+            padding: 0 20px;
         }
         
         .disease-add-btn {
-            border-radius: 0 20px 20px 0;
+            border-radius: 0 25px 25px 0;
             border-left: none;
+            font-size: 1.3rem;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        @media (max-width: 576px) {
+        textarea.form-control {
+            min-height: 120px;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
             .container {
-                padding: 5px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .card-body {
                 padding: 10px;
             }
             
-            .medicine-item {
-                padding: 8px;
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
             }
             
-            .toast-container {
-                top: 10px;
-                right: 10px;
-                left: 10px;
+            .card-body {
+                padding: 15px;
+            }
+            
+            .medicine-item {
+                padding: 15px;
             }
             
             .custom-toast {
                 width: 100%;
+                left: 0;
+                right: 0;
+                border-radius: 0;
             }
             
             .copy-btn {
-                bottom: 15px;
-                right: 15px;
+                bottom: 20px;
+                right: 20px;
             }
             
             .floating-btn {
-                width: 50px;
-                height: 50px;
+                width: 65px;
+                height: 65px;
             }
             
             .add-patient-btn {
-                bottom: 75px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
+                bottom: 100px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
             }
             
             .patient-info-row {
@@ -814,7 +882,7 @@
             
             .patient-info-label {
                 width: 100%;
-                margin-bottom: 3px;
+                margin-bottom: 5px;
             }
             
             .prescription-patient-info {
@@ -822,14 +890,61 @@
             }
             
             .patient-detail-label {
-                width: 100px;
+                width: 110px;
+                font-size: 1rem;
+            }
+            
+            .patient-detail-row {
+                font-size: 1rem;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            .form-control, .form-select {
+                font-size: 1rem;
+                padding: 12px;
+                min-height: 50px;
+            }
+            
+            .form-tab, .no-form-tab, .form-tab-add {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .medicine-name {
+                font-size: 1.1rem;
+            }
+            
+            .medicine-details {
+                font-size: 0.9rem;
+            }
+            
+            .voice-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            
+            .voice-status {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-3">Medicine Prescription</h1>
+        <h1 class="text-center mb-4">Medicine Prescription</h1>
         
         <!-- Add Medicine Section -->
         <div class="card">
@@ -837,12 +952,12 @@
                 <i class="bi bi-plus-circle"></i>Add Medicine
             </div>
             <div class="card-body">
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="medicineName" class="form-label">Medicine Name</label>
                     <input type="text" class="form-control" id="medicineName" placeholder="Enter medicine name">
                 </div>
                 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label class="form-label">Medicine Form</label>
                     <div class="form-tabs-container" id="formTabsContainer">
                         <div class="no-form-tab active" data-form="">No Form</div>
@@ -877,7 +992,7 @@
                     <input type="text" class="form-control tab-content active" id="customForm" placeholder="Tab." value="">
                 </div>
                 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="medicineQuantity" class="form-label">Quantity</label>
                     <div class="quantity-selector">
                         <button class="btn btn-outline-secondary quantity-btn" id="decreaseQuantity">
@@ -899,7 +1014,7 @@
                 </div>
                 
                 <button type="button" class="btn btn-primary w-100" id="addMedicineBtn">
-                    <i class="bi bi-plus-lg"></i> Add Medicine
+                    <i class="bi bi-plus-lg me-2"></i> Add Medicine
                 </button>
             </div>
         </div>
@@ -907,20 +1022,20 @@
         <!-- Parse Text Section -->
         <div class="parse-section">
             <div class="parse-title">
-                <i class="bi bi-magic"></i> Paste Medicine List
+                <i class="bi bi-magic me-2"></i> Paste Medicine List
             </div>
             <div class="mb-3">
                 <textarea class="form-control" id="medicineText" rows="4" placeholder="Paste your medicine list here..."></textarea>
             </div>
             <button type="button" class="btn btn-primary w-100" id="parseMedicineBtn">
-                <i class="bi bi-magic"></i> Extract Medicines
+                <i class="bi bi-magic me-2"></i> Extract Medicines
             </button>
         </div>
         
         <!-- Voice Input Section -->
         <div class="voice-section">
             <div class="parse-title">
-                <i class="bi bi-mic"></i> Voice Input
+                <i class="bi bi-mic me-2"></i> Voice Input
             </div>
             <button class="voice-btn" id="voiceBtn">
                 <i class="bi bi-mic"></i>
@@ -929,7 +1044,7 @@
         </div>
         
         <!-- Medicine Store Section -->
-        <div class="card mt-3">
+        <div class="card mt-4">
             <div class="card-header">
                 <i class="bi bi-bag"></i>Medicine Store
             </div>
@@ -939,34 +1054,34 @@
                     <input type="text" class="form-control search-input" id="medicineSearch" placeholder="Search medicines...">
                 </div>
                 <div id="medicineStore">
-                    <p class="text-center text-muted">No medicines added yet</p>
+                    <p class="text-center text-muted fs-5">No medicines added yet</p>
                 </div>
             </div>
         </div>
         
         <!-- Final Prescription Section -->
-        <div class="card mt-3">
+        <div class="card mt-4">
             <div class="card-header">
                 <i class="bi bi-file-medical"></i>Final Prescription
             </div>
             <div class="card-body">
                 <div id="finalPrescription">
-                    <p class="text-center text-muted">No medicines selected for prescription</p>
+                    <p class="text-center text-muted fs-5">No medicines selected for prescription</p>
                 </div>
                 <div class="order-summary" id="prescriptionSummary" style="display: none;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
-                        <span class="fw-bold">Date: <span id="prescriptionDate"></span></span>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-bold fs-5">Total Items: <span id="totalItems">0</span></span>
+                        <span class="fw-bold fs-5">Date: <span id="prescriptionDate"></span></span>
                     </div>
-                    <button type="button" class="btn clear-btn w-100 mt-2" id="clearSelectionBtn">
-                        <i class="bi bi-trash"></i> Clear Selection
+                    <button type="button" class="btn clear-btn w-100" id="clearSelectionBtn">
+                        <i class="bi bi-trash me-2"></i> Clear Selection
                     </button>
                 </div>
             </div>
         </div>
         
         <!-- Patients Section -->
-        <div class="card mt-3">
+        <div class="card mt-4">
             <div class="card-header">
                 <i class="bi bi-people"></i>Patients
             </div>
@@ -976,7 +1091,7 @@
                     <input type="text" class="form-control search-input" id="patientSearch" placeholder="Search patients...">
                 </div>
                 <div id="patientsContainer">
-                    <p class="text-center text-muted">No patients added yet</p>
+                    <p class="text-center text-muted fs-5">No patients added yet</p>
                 </div>
             </div>
         </div>
@@ -990,7 +1105,7 @@
     <!-- Copy Button -->
     <div class="copy-btn">
         <button class="btn btn-primary floating-btn" id="copyPrescriptionBtn" title="Copy Prescription">
-            <i class="bi bi-clipboard fs-4"></i>
+            <i class="bi bi-clipboard fs-2"></i>
         </button>
     </div>
     
@@ -1028,9 +1143,9 @@
                         <input type="text" class="form-control" id="patientAddress" placeholder="Address">
                         <label for="patientAddress">Address</label>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Diseases (Optional)</label>
-                        <div id="diseaseTags" class="mb-2"></div>
+                        <div id="diseaseTags" class="mb-3"></div>
                         <div class="disease-input-container">
                             <input type="text" class="form-control disease-input" id="diseaseInput" placeholder="Add disease">
                             <button class="btn btn-primary disease-add-btn" id="addDiseaseBtn">
@@ -1038,13 +1153,13 @@
                             </button>
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Select Medicines</label>
-                        <div class="search-container mb-2">
+                        <div class="search-container mb-3">
                             <i class="bi bi-search search-icon"></i>
                             <input type="text" class="form-control search-input" id="patientMedicineSearch" placeholder="Search medicines...">
                         </div>
-                        <div id="patientMedicinesList" class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                        <div id="patientMedicinesList" class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
                             <p class="text-muted text-center">No medicines available</p>
                         </div>
                     </div>
@@ -1061,8 +1176,8 @@
                                 <input type="text" class="form-control" id="customMedicineQuantity" placeholder="Quantity">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2 w-100" id="addCustomMedicineBtn">
-                            <i class="bi bi-plus"></i> Add Custom Medicine
+                        <button type="button" class="btn btn-outline-primary mt-3 w-100" id="addCustomMedicineBtn">
+                            <i class="bi bi-plus me-2"></i> Add Custom Medicine
                         </button>
                     </div>
                 </div>
@@ -1618,8 +1733,8 @@
                 
                 if (filteredMedicines.length === 0) {
                     storeContainer.innerHTML = searchTerm ? 
-                        '<p class="text-center text-muted">No medicines match your search</p>' : 
-                        '<p class="text-center text-muted">No medicines added yet</p>';
+                        '<p class="text-center text-muted fs-5">No medicines match your search</p>' : 
+                        '<p class="text-center text-muted fs-5">No medicines added yet</p>';
                     return;
                 }
                 
@@ -1636,7 +1751,7 @@
                 let html = '';
                 
                 Object.keys(groupedMedicines).forEach(form => {
-                    html += `<div class="mb-3">
+                    html += `<div class="mb-4">
                         <div class="section-title">${form}</div>
                         <div class="list-group">`;
                     
@@ -1729,7 +1844,7 @@
                 const prescriptionSummary = document.getElementById('prescriptionSummary');
                 
                 if (selectedMedicines.length === 0) {
-                    finalPrescriptionContainer.innerHTML = '<p class="text-center text-muted">No medicines selected for prescription</p>';
+                    finalPrescriptionContainer.innerHTML = '<p class="text-center text-muted fs-5">No medicines selected for prescription</p>';
                     prescriptionSummary.style.display = 'none';
                     return;
                 }
@@ -1842,7 +1957,7 @@
                     html += `
                         <div class="disease-tag">
                             ${disease}
-                            <i class="bi bi-x ms-1" style="cursor: pointer;" data-index="${index}"></i>
+                            <i class="bi bi-x ms-2" style="cursor: pointer;" data-index="${index}"></i>
                         </div>`;
                 });
                 
@@ -1879,7 +1994,7 @@
                 
                 filteredMedicines.forEach(medicine => {
                     html += `
-                        <div class="form-check">
+                        <div class="form-check mb-2">
                             <input class="form-check-input" type="checkbox" value="${medicine.id}" id="medicineCheck${medicine.id}">
                             <label class="form-check-label" for="medicineCheck${medicine.id}">
                                 ${medicine.form ? medicine.form + ' ' : ''}${medicine.name} (${medicine.quantity})
@@ -1995,8 +2110,8 @@
                 
                 if (filteredPatients.length === 0) {
                     patientsContainer.innerHTML = searchTerm ? 
-                        '<p class="text-center text-muted">No patients match your search</p>' : 
-                        '<p class="text-center text-muted">No patients added yet</p>';
+                        '<p class="text-center text-muted fs-5">No patients match your search</p>' : 
+                        '<p class="text-center text-muted fs-5">No patients added yet</p>';
                     return;
                 }
                 
@@ -2104,7 +2219,7 @@
                                 <div class="patient-detail-label">Medicines:</div>
                                 <div>${patient.medicines.length > 0 ? 
                                     patient.medicines.map(med => `
-                                        <div>${med.form ? med.form + ' ' : ''}${med.name} - ${med.quantity}</div>
+                                        <div class="mb-2">${med.form ? med.form + ' ' : ''}${med.name} - ${med.quantity}</div>
                                     `).join('') : 
                                     'No medicines prescribed'
                                 }</div>
@@ -2131,7 +2246,7 @@
                 tempContainer.style.position = 'absolute';
                 tempContainer.style.left = '-9999px';
                 tempContainer.style.width = '800px';
-                tempContainer.style.padding = '20px';
+                tempContainer.style.padding = '25px';
                 tempContainer.style.backgroundColor = 'white';
                 tempContainer.style.fontFamily = 'Arial, sans-serif';
                 
@@ -2210,7 +2325,7 @@
                 const icon = type === 'error' ? 'bi-exclamation-circle' : 'bi-check-circle';
                 
                 toast.innerHTML = `
-                    <i class="bi ${icon} fs-5"></i>
+                    <i class="bi ${icon} fs-4"></i>
                     <span class="toast-message">${message}</span>
                 `;
                 
