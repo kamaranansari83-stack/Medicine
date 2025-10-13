@@ -28,12 +28,13 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            padding-bottom: 80px;
         }
         
         .container {
             max-width: 100%;
             padding: 10px;
-            margin-bottom: 80px;
+            margin-bottom: 20px;
         }
         
         h1 {
@@ -289,7 +290,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
         }
         
         .patient-name {
@@ -299,11 +299,6 @@
         
         .patient-details {
             padding: 15px;
-            display: none;
-        }
-        
-        .patient-details.show {
-            display: block;
         }
         
         .patient-info-row {
@@ -319,11 +314,6 @@
         
         .patient-medicines {
             padding: 0 15px 15px;
-            display: none;
-        }
-        
-        .patient-medicines.show {
-            display: block;
         }
         
         .patient-medicine-item {
@@ -504,20 +494,273 @@
             padding-left: 35px;
         }
         
-        .add-medicine-section {
+        /* New styles for the requested features */
+        .voice-section {
             background-color: #f1f8ff;
             border: 1px dashed var(--primary-color);
             border-radius: 8px;
             padding: 15px;
             margin-top: 15px;
+            text-align: center;
         }
         
-        .collapse-icon {
-            transition: transform 0.3s;
+        .voice-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.5rem;
         }
         
-        .collapse-icon.rotated {
-            transform: rotate(180deg);
+        .voice-btn.recording {
+            background-color: var(--danger-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        
+        .voice-status {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .clear-btn {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .clear-btn:hover {
+            background-color: #c82333;
+            border-color: #bd2130';
+        }
+        
+        .form-tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .form-tab-container {
+            position: relative;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .form-tab-delete {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border: 1px solid white;
+        }
+        
+        .form-tab-add {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-tab-add i {
+            margin-right: 5px;
+        }
+        
+        .no-form-tab {
+            background-color: #e9ecef;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        
+        .no-form-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .quantity-presets {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            gap: 5px;
+        }
+        
+        .quantity-preset {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 15px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .quantity-preset:hover {
+            background-color: #dee2e6;
+        }
+        
+        .quantity-preset.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .patient-summary {
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .patient-summary:active {
+            transform: scale(0.98);
+            background-color: #e9ecef;
+        }
+        
+        .patient-summary-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .patient-summary-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .patient-summary-medicines {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: var(--secondary-color);
+        }
+        
+        .patient-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .patient-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .patient-detail-content {
+            background-color: white;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .patient-detail-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .patient-detail-body {
+            padding: 20px;
+        }
+        
+        .patient-detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .patient-detail-label {
+            font-weight: 600;
+            width: 120px;
+            color: var(--secondary-color);
+        }
+        
+        .disease-tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            padding: 3px 10px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .disease-input-container {
+            display: flex;
+            margin-top: 10px;
+        }
+        
+        .disease-input {
+            flex-grow: 1;
+            border-radius: 20px 0 0 20px;
+            border-right: none;
+        }
+        
+        .disease-add-btn {
+            border-radius: 0 20px 20px 0;
+            border-left: none;
         }
         
         @media (max-width: 576px) {
@@ -577,6 +820,10 @@
             .prescription-patient-info {
                 grid-template-columns: 1fr;
             }
+            
+            .patient-detail-label {
+                width: 100px;
+            }
         }
     </style>
 </head>
@@ -597,16 +844,37 @@
                 
                 <div class="mb-3">
                     <label class="form-label">Medicine Form</label>
-                    <div class="medicine-form-tabs">
-                        <div class="form-tab active" data-form="Tab.">Tab.</div>
-                        <div class="form-tab" data-form="Sp.">Sp.</div>
-                        <div class="form-tab" data-form="Dp.">Dp.</div>
-                        <div class="form-tab" data-form="Cap.">Cap.</div>
-                        <div class="form-tab" data-form="inj.">inj.</div>
-                        <div class="form-tab" data-form="D.">D.</div>
-                        <div class="form-tab" data-form="Other">Other</div>
+                    <div class="form-tabs-container" id="formTabsContainer">
+                        <div class="no-form-tab active" data-form="">No Form</div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="Tab.">Tab.</div>
+                            <div class="form-tab-delete" data-form="Tab.">×</div>
+                        </div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="Sp.">Sp.</div>
+                            <div class="form-tab-delete" data-form="Sp.">×</div>
+                        </div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="Dp.">Dp.</div>
+                            <div class="form-tab-delete" data-form="Dp.">×</div>
+                        </div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="Cap.">Cap.</div>
+                            <div class="form-tab-delete" data-form="Cap.">×</div>
+                        </div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="inj.">inj.</div>
+                            <div class="form-tab-delete" data-form="inj.">×</div>
+                        </div>
+                        <div class="form-tab-container">
+                            <div class="form-tab" data-form="D.">D.</div>
+                            <div class="form-tab-delete" data-form="D.">×</div>
+                        </div>
+                        <button class="form-tab-add" id="addFormTab">
+                            <i class="bi bi-plus"></i> Add
+                        </button>
                     </div>
-                    <input type="text" class="form-control tab-content active" id="customForm" placeholder="Tab." value="Tab.">
+                    <input type="text" class="form-control tab-content active" id="customForm" placeholder="Tab." value="">
                 </div>
                 
                 <div class="mb-3">
@@ -619,6 +887,14 @@
                         <button class="btn btn-outline-secondary quantity-btn" id="increaseQuantity">
                             <i class="bi bi-plus"></i>
                         </button>
+                    </div>
+                    <div class="quantity-presets">
+                        <div class="quantity-preset" data-quantity="1 box">1 box</div>
+                        <div class="quantity-preset" data-quantity="10">10</div>
+                        <div class="quantity-preset" data-quantity="20">20</div>
+                        <div class="quantity-preset" data-quantity="30">30</div>
+                        <div class="quantity-preset" data-quantity="100ml">100ml</div>
+                        <div class="quantity-preset" data-quantity="200ml">200ml</div>
                     </div>
                 </div>
                 
@@ -639,6 +915,17 @@
             <button type="button" class="btn btn-primary w-100" id="parseMedicineBtn">
                 <i class="bi bi-magic"></i> Extract Medicines
             </button>
+        </div>
+        
+        <!-- Voice Input Section -->
+        <div class="voice-section">
+            <div class="parse-title">
+                <i class="bi bi-mic"></i> Voice Input
+            </div>
+            <button class="voice-btn" id="voiceBtn">
+                <i class="bi bi-mic"></i>
+            </button>
+            <div class="voice-status" id="voiceStatus">Tap to speak</div>
         </div>
         
         <!-- Medicine Store Section -->
@@ -671,6 +958,9 @@
                         <span class="fw-bold">Total Items: <span id="totalItems">0</span></span>
                         <span class="fw-bold">Date: <span id="prescriptionDate"></span></span>
                     </div>
+                    <button type="button" class="btn clear-btn w-100 mt-2" id="clearSelectionBtn">
+                        <i class="bi bi-trash"></i> Clear Selection
+                    </button>
                 </div>
             </div>
         </div>
@@ -721,9 +1011,14 @@
                         <input type="text" class="form-control" id="patientAge" placeholder="Age">
                         <label for="patientAge">Age</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="patientGender" placeholder="Gender">
-                        <label for="patientGender">Gender</label>
+                    <div class="mb-3">
+                        <label for="patientGender" class="form-label">Gender</label>
+                        <select class="form-select" id="patientGender">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="patientContact" placeholder="Contact">
@@ -733,50 +1028,42 @@
                         <input type="text" class="form-control" id="patientAddress" placeholder="Address">
                         <label for="patientAddress">Address</label>
                     </div>
-                    
-                    <!-- Add Medicine Section in Modal -->
-                    <div class="add-medicine-section">
-                        <div class="parse-title">
-                            <i class="bi bi-plus-circle"></i> Add Medicine for Patient
+                    <div class="mb-3">
+                        <label class="form-label">Diseases (Optional)</label>
+                        <div id="diseaseTags" class="mb-2"></div>
+                        <div class="disease-input-container">
+                            <input type="text" class="form-control disease-input" id="diseaseInput" placeholder="Add disease">
+                            <button class="btn btn-primary disease-add-btn" id="addDiseaseBtn">
+                                <i class="bi bi-plus"></i>
+                            </button>
                         </div>
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="modalMedicineName" placeholder="Medicine Name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Medicines</label>
+                        <div class="search-container mb-2">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control search-input" id="patientMedicineSearch" placeholder="Search medicines...">
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Medicine Form</label>
-                            <div class="medicine-form-tabs">
-                                <div class="form-tab active" data-form="Tab.">Tab.</div>
-                                <div class="form-tab" data-form="Sp.">Sp.</div>
-                                <div class="form-tab" data-form="Dp.">Dp.</div>
-                                <div class="form-tab" data-form="Cap.">Cap.</div>
-                                <div class="form-tab" data-form="inj.">inj.</div>
-                                <div class="form-tab" data-form="D.">D.</div>
-                                <div class="form-tab" data-form="Other">Other</div>
+                        <div id="patientMedicinesList" class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                            <p class="text-muted text-center">No medicines available</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Add Custom Medicine</label>
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="customMedicineForm" placeholder="Form">
                             </div>
-                            <input type="text" class="form-control tab-content active" id="modalCustomForm" placeholder="Tab." value="Tab.">
-                        </div>
-                        <div class="mb-3">
-                            <label for="modalMedicineQuantity" class="form-label">Quantity</label>
-                            <div class="quantity-selector">
-                                <button class="btn btn-outline-secondary quantity-btn" id="modalDecreaseQuantity">
-                                    <i class="bi bi-dash"></i>
-                                </button>
-                                <input type="text" class="form-control quantity-input" id="modalMedicineQuantity" placeholder="e.g., 1 box, 30, 200ml">
-                                <button class="btn btn-outline-secondary quantity-btn" id="modalIncreaseQuantity">
-                                    <i class="bi bi-plus"></i>
-                                </button>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="customMedicineName" placeholder="Name">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" id="customMedicineQuantity" placeholder="Quantity">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-primary w-100 mb-3" id="addMedicineToPatientBtn">
-                            <i class="bi bi-plus-lg"></i> Add Medicine
+                        <button type="button" class="btn btn-sm btn-outline-primary mt-2 w-100" id="addCustomMedicineBtn">
+                            <i class="bi bi-plus"></i> Add Custom Medicine
                         </button>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Selected Medicines</label>
-                            <div id="patientMedicinesList" class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
-                                <p class="text-muted text-center">No medicines added yet</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -827,58 +1114,152 @@
             let medicines = [];
             let selectedMedicines = [];
             let patients = [];
-            let patientMedicines = []; // Medicines added specifically for patients
+            let medicineForms = ['Tab.', 'Sp.', 'Dp.', 'Cap.', 'inj.', 'D.'];
+            let isRecording = false;
+            let recognition;
+            let patientDiseases = [];
             const currentDate = new Date();
             const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
             document.getElementById('prescriptionDate').textContent = formattedDate;
             
+            // Initialize speech recognition if available
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US'; // Default language
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('voiceStatus').textContent = `Heard: "${transcript}"`;
+                    
+                    // Process the transcript to extract medicine information
+                    processVoiceInput(transcript);
+                    
+                    // Reset recording state
+                    isRecording = false;
+                    document.getElementById('voiceBtn').classList.remove('recording');
+                    document.getElementById('voiceBtn').innerHTML = '<i class="bi bi-mic"></i>';
+                    document.getElementById('voiceStatus').textContent = 'Tap to speak';
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event.error);
+                    showToast('Error recognizing speech. Please try again.', 'error');
+                    
+                    // Reset recording state
+                    isRecording = false;
+                    document.getElementById('voiceBtn').classList.remove('recording');
+                    document.getElementById('voiceBtn').innerHTML = '<i class="bi bi-mic"></i>';
+                    document.getElementById('voiceStatus').textContent = 'Tap to speak';
+                };
+                
+                recognition.onend = function() {
+                    if (isRecording) {
+                        // If still in recording state, restart recognition
+                        recognition.start();
+                    }
+                };
+            } else {
+                // Speech recognition not supported
+                document.getElementById('voiceBtn').style.display = 'none';
+                document.getElementById('voiceStatus').textContent = 'Speech recognition not supported in your browser';
+            }
+            
             // Form tab selection
-            const formTabs = document.querySelectorAll('.form-tab');
+            const formTabsContainer = document.getElementById('formTabsContainer');
             const customFormInput = document.getElementById('customForm');
             
-            // Modal form tabs
-            const modalFormTabs = document.querySelectorAll('#patientModal .form-tab');
-            const modalCustomFormInput = document.getElementById('modalCustomForm');
-            
-            formTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    formTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
+            // Handle form tab clicks
+            formTabsContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('form-tab') || e.target.classList.contains('no-form-tab')) {
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.form-tab, .no-form-tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
                     
-                    const formValue = this.getAttribute('data-form');
-                    if (formValue === 'Other') {
-                        customFormInput.value = '';
-                        customFormInput.focus();
-                    } else {
-                        customFormInput.value = formValue;
+                    // Add active class to clicked tab
+                    e.target.classList.add('active');
+                    
+                    // Update custom form input
+                    const formValue = e.target.getAttribute('data-form');
+                    customFormInput.value = formValue;
+                }
+                
+                // Handle form tab delete
+                if (e.target.classList.contains('form-tab-delete')) {
+                    const formToDelete = e.target.getAttribute('data-form');
+                    
+                    // Remove from medicineForms array
+                    const index = medicineForms.indexOf(formToDelete);
+                    if (index > -1) {
+                        medicineForms.splice(index, 1);
                     }
-                });
+                    
+                    // Remove the tab container
+                    e.target.parentElement.remove();
+                    
+                    // If the deleted form was active, set the first tab as active
+                    if (customFormInput.value === formToDelete) {
+                        const firstTab = document.querySelector('.form-tab, .no-form-tab');
+                        if (firstTab) {
+                            firstTab.classList.add('active');
+                            customFormInput.value = firstTab.getAttribute('data-form');
+                        } else {
+                            customFormInput.value = '';
+                        }
+                    }
+                }
             });
             
-            modalFormTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    modalFormTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
+            // Add new form tab
+            document.getElementById('addFormTab').addEventListener('click', function() {
+                const newForm = prompt('Enter new medicine form:');
+                if (newForm && newForm.trim() !== '') {
+                    // Add to medicineForms array
+                    medicineForms.push(newForm.trim());
                     
-                    const formValue = this.getAttribute('data-form');
-                    if (formValue === 'Other') {
-                        modalCustomFormInput.value = '';
-                        modalCustomFormInput.focus();
-                    } else {
-                        modalCustomFormInput.value = formValue;
-                    }
+                    // Create new tab
+                    const tabContainer = document.createElement('div');
+                    tabContainer.className = 'form-tab-container';
+                    
+                    const tab = document.createElement('div');
+                    tab.className = 'form-tab';
+                    tab.setAttribute('data-form', newForm.trim());
+                    tab.textContent = newForm.trim();
+                    
+                    const deleteBtn = document.createElement('div');
+                    deleteBtn.className = 'form-tab-delete';
+                    deleteBtn.setAttribute('data-form', newForm.trim());
+                    deleteBtn.textContent = '×';
+                    
+                    tabContainer.appendChild(tab);
+                    tabContainer.appendChild(deleteBtn);
+                    
+                    // Insert before the "Add" button
+                    this.parentElement.insertBefore(tabContainer, this);
+                }
+            });
+            
+            // Quantity presets
+            const quantityPresets = document.querySelectorAll('.quantity-preset');
+            const quantityInput = document.getElementById('medicineQuantity');
+            
+            quantityPresets.forEach(preset => {
+                preset.addEventListener('click', function() {
+                    const quantity = this.getAttribute('data-quantity');
+                    quantityInput.value = quantity;
+                    
+                    // Update active state
+                    quantityPresets.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
                 });
             });
             
             // Quantity buttons
-            const quantityInput = document.getElementById('medicineQuantity');
             const decreaseBtn = document.getElementById('decreaseQuantity');
             const increaseBtn = document.getElementById('increaseQuantity');
-            
-            // Modal quantity buttons
-            const modalQuantityInput = document.getElementById('modalMedicineQuantity');
-            const modalDecreaseBtn = document.getElementById('modalDecreaseQuantity');
-            const modalIncreaseBtn = document.getElementById('modalIncreaseQuantity');
             
             decreaseBtn.addEventListener('click', function() {
                 const currentValue = quantityInput.value.trim();
@@ -912,37 +1293,112 @@
                 }
             });
             
-            modalDecreaseBtn.addEventListener('click', function() {
-                const currentValue = modalQuantityInput.value.trim();
-                if (currentValue) {
-                    // Try to extract numeric value
-                    const numericMatch = currentValue.match(/(\d+)/);
-                    if (numericMatch) {
-                        let numValue = parseInt(numericMatch[1]);
-                        if (numValue > 1) {
-                            numValue--;
-                            const newValue = currentValue.replace(/(\d+)/, numValue.toString());
-                            modalQuantityInput.value = newValue;
-                        }
-                    }
+            // Voice button
+            document.getElementById('voiceBtn').addEventListener('click', function() {
+                if (!recognition) {
+                    showToast('Speech recognition not supported in your browser', 'error');
+                    return;
+                }
+                
+                if (isRecording) {
+                    // Stop recording
+                    isRecording = false;
+                    recognition.stop();
+                    this.classList.remove('recording');
+                    this.innerHTML = '<i class="bi bi-mic"></i>';
+                    document.getElementById('voiceStatus').textContent = 'Tap to speak';
+                } else {
+                    // Start recording
+                    isRecording = true;
+                    recognition.start();
+                    this.classList.add('recording');
+                    this.innerHTML = '<i class="bi bi-stop-circle"></i>';
+                    document.getElementById('voiceStatus').textContent = 'Listening...';
                 }
             });
             
-            modalIncreaseBtn.addEventListener('click', function() {
-                const currentValue = modalQuantityInput.value.trim();
-                if (currentValue) {
-                    // Try to extract numeric value
-                    const numericMatch = currentValue.match(/(\d+)/);
-                    if (numericMatch) {
-                        let numValue = parseInt(numericMatch[1]);
-                        numValue++;
-                        const newValue = currentValue.replace(/(\d+)/, numValue.toString());
-                        modalQuantityInput.value = newValue;
+            // Process voice input
+            function processVoiceInput(transcript) {
+                // Try to extract medicine information from the transcript
+                // Expected format: [form] [medicine name] [quantity]
+                
+                // Try to match form
+                let form = '';
+                let name = '';
+                let quantity = '';
+                
+                // Check for forms in the transcript
+                for (const f of medicineForms) {
+                    if (transcript.toLowerCase().includes(f.toLowerCase().replace('.', ''))) {
+                        form = f;
+                        break;
                     }
-                } else {
-                    modalQuantityInput.value = "1";
                 }
-            });
+                
+                // If no form found, check for "no form"
+                if (!form && transcript.toLowerCase().includes('no form')) {
+                    form = '';
+                }
+                
+                // Extract name and quantity
+                // Remove form from transcript if found
+                let nameAndQuantity = transcript;
+                if (form) {
+                    const formRegex = new RegExp(form.replace('.', '\\.') + '\\s*', 'i');
+                    nameAndQuantity = nameAndQuantity.replace(formRegex, '');
+                }
+                
+                // Try to extract quantity (look for numbers at the end)
+                const quantityMatch = nameAndQuantity.match(/(\d+\s*(?:box|ml|mg|g|kg|ampul|vail|no:\d+|tabs?|caps?|units?))$/i);
+                if (quantityMatch) {
+                    quantity = quantityMatch[1];
+                    nameAndQuantity = nameAndQuantity.replace(quantityMatch[0], '').trim();
+                } else {
+                    // Try to extract just a number
+                    const numberMatch = nameAndQuantity.match(/(\d+)$/);
+                    if (numberMatch) {
+                        quantity = numberMatch[1];
+                        nameAndQuantity = nameAndQuantity.replace(numberMatch[0], '').trim();
+                    }
+                }
+                
+                // The remaining text is the medicine name
+                name = nameAndQuantity.trim();
+                
+                // If we have at least a name, add the medicine
+                if (name) {
+                    // Check if medicine already exists
+                    const existingMedicine = medicines.find(m => 
+                        m.name.toLowerCase() === name.toLowerCase() && 
+                        m.form === form
+                    );
+                    
+                    if (existingMedicine) {
+                        // Medicine already exists, just select it
+                        existingMedicine.selected = true;
+                        showToast(`Selected existing medicine: ${form ? form + ' ' : ''}${name}`);
+                    } else {
+                        // Add new medicine
+                        const medicine = {
+                            id: Date.now(),
+                            name: name,
+                            form: form,
+                            quantity: quantity || '1',
+                            selected: true
+                        };
+                        
+                        medicines.push(medicine);
+                        showToast(`Added medicine: ${form ? form + ' ' : ''}${name} (${quantity || '1'})`);
+                    }
+                    
+                    // Update UI
+                    renderMedicineStore();
+                    updatePatientMedicinesList();
+                    updateFinalPrescription();
+                } else {
+                    showToast('Could not identify medicine from speech', 'error');
+                }
+            }
             
             // Add medicine function
             document.getElementById('addMedicineBtn').addEventListener('click', function() {
@@ -952,11 +1408,6 @@
                 
                 if (!name) {
                     showToast('Please enter medicine name', 'error');
-                    return;
-                }
-                
-                if (!form) {
-                    showToast('Please select or enter medicine form', 'error');
                     return;
                 }
                 
@@ -975,50 +1426,16 @@
                 
                 medicines.push(medicine);
                 renderMedicineStore();
+                updatePatientMedicinesList();
                 
                 // Clear form
                 document.getElementById('medicineName').value = '';
                 document.getElementById('medicineQuantity').value = '';
                 
+                // Reset quantity preset active state
+                quantityPresets.forEach(p => p.classList.remove('active'));
+                
                 showToast('Medicine added successfully');
-            });
-            
-            // Add medicine to patient function
-            document.getElementById('addMedicineToPatientBtn').addEventListener('click', function() {
-                const name = document.getElementById('modalMedicineName').value.trim();
-                const form = document.getElementById('modalCustomForm').value.trim();
-                const quantity = document.getElementById('modalMedicineQuantity').value.trim();
-                
-                if (!name) {
-                    showToast('Please enter medicine name', 'error');
-                    return;
-                }
-                
-                if (!form) {
-                    showToast('Please select or enter medicine form', 'error');
-                    return;
-                }
-                
-                if (!quantity) {
-                    showToast('Please enter quantity', 'error');
-                    return;
-                }
-                
-                const medicine = {
-                    id: Date.now(),
-                    name: name,
-                    form: form,
-                    quantity: quantity
-                };
-                
-                patientMedicines.push(medicine);
-                updatePatientMedicinesList();
-                
-                // Clear form
-                document.getElementById('modalMedicineName').value = '';
-                document.getElementById('modalMedicineQuantity').value = '';
-                
-                showToast('Medicine added to patient');
             });
             
             // Parse medicine text function
@@ -1080,7 +1497,7 @@
                             const quantity = generalMatch[2];
                             
                             // Try to infer form from name
-                            let form = 'Other';
+                            let form = '';
                             if (name.toLowerCase().includes('tab') || name.toLowerCase().includes('tablet')) {
                                 form = 'Tab.';
                             } else if (name.toLowerCase().includes('syrup') || name.toLowerCase().includes('sp.')) {
@@ -1112,7 +1529,7 @@
                             if (words.length >= 2) {
                                 let name = '';
                                 let quantity = '';
-                                let form = 'Other';
+                                let form = '';
                                 
                                 // Try to identify form in the words
                                 for (let i = 0; i < words.length; i++) {
@@ -1167,6 +1584,7 @@
                 
                 if (addedCount > 0) {
                     renderMedicineStore();
+                    updatePatientMedicinesList();
                     document.getElementById('medicineText').value = '';
                     showToast(`Successfully added ${addedCount} medicines`);
                 } else {
@@ -1208,10 +1626,11 @@
                 // Group medicines by form
                 const groupedMedicines = {};
                 filteredMedicines.forEach(medicine => {
-                    if (!groupedMedicines[medicine.form]) {
-                        groupedMedicines[medicine.form] = [];
+                    const formKey = medicine.form || 'No Form';
+                    if (!groupedMedicines[formKey]) {
+                        groupedMedicines[formKey] = [];
                     }
-                    groupedMedicines[medicine.form].push(medicine);
+                    groupedMedicines[formKey].push(medicine);
                 });
                 
                 let html = '';
@@ -1270,13 +1689,10 @@
                             document.getElementById('medicineQuantity').value = medicine.quantity;
                             
                             // Set the active tab
-                            formTabs.forEach(tab => {
+                            document.querySelectorAll('.form-tab, .no-form-tab').forEach(tab => {
                                 tab.classList.remove('active');
                                 if (tab.getAttribute('data-form') === medicine.form || 
-                                    (medicine.form !== 'Tab.' && medicine.form !== 'Sp.' && 
-                                     medicine.form !== 'Dp.' && medicine.form !== 'Cap.' && 
-                                     medicine.form !== 'inj.' && medicine.form !== 'D.' && 
-                                     tab.getAttribute('data-form') === 'Other')) {
+                                    (medicine.form === '' && tab.classList.contains('no-form-tab'))) {
                                     tab.classList.add('active');
                                 }
                             });
@@ -1284,6 +1700,7 @@
                             // Remove the medicine
                             medicines = medicines.filter(m => m.id !== id);
                             renderMedicineStore();
+                            updatePatientMedicinesList();
                             
                             // Scroll to top
                             window.scrollTo(0, 0);
@@ -1296,6 +1713,7 @@
                         const id = parseInt(this.getAttribute('data-id'));
                         medicines = medicines.filter(m => m.id !== id);
                         renderMedicineStore();
+                        updatePatientMedicinesList();
                         updateFinalPrescription();
                         showToast('Medicine removed');
                     });
@@ -1321,7 +1739,7 @@
                 selectedMedicines.forEach(medicine => {
                     html += `
                         <div class="final-prescription-item">
-                            _*${medicine.form} ${medicine.name} (${medicine.quantity})*_
+                            _*${medicine.form ? medicine.form + ' ' : ''}${medicine.name} (${medicine.quantity})*_
                         </div>`;
                 });
                 
@@ -1329,6 +1747,16 @@
                 document.getElementById('totalItems').textContent = selectedMedicines.length;
                 prescriptionSummary.style.display = 'block';
             }
+            
+            // Clear selection button
+            document.getElementById('clearSelectionBtn').addEventListener('click', function() {
+                medicines.forEach(medicine => {
+                    medicine.selected = false;
+                });
+                updateFinalPrescription();
+                renderMedicineStore();
+                showToast('Selection cleared');
+            });
             
             // Copy prescription function
             document.getElementById('copyPrescriptionBtn').addEventListener('click', function() {
@@ -1340,7 +1768,7 @@
                 let prescriptionText = `DATE: ${formattedDate}\n`;
                 
                 selectedMedicines.forEach(medicine => {
-                    prescriptionText += `_*${medicine.form} ${medicine.name} (${medicine.quantity})*_\n`;
+                    prescriptionText += `_*${medicine.form ? medicine.form + ' ' : ''}${medicine.name} (${medicine.quantity})*_\n`;
                 });
                 
                 // Copy to clipboard
@@ -1371,46 +1799,148 @@
                 document.getElementById('patientContact').value = '';
                 document.getElementById('patientAddress').value = '';
                 
-                // Reset patient medicines
-                patientMedicines = [];
+                // Reset diseases
+                patientDiseases = [];
+                renderDiseaseTags();
+                
+                // Update medicines list
                 updatePatientMedicinesList();
                 
                 patientModal.show();
             });
             
+            // Add disease
+            document.getElementById('addDiseaseBtn').addEventListener('click', function() {
+                const diseaseInput = document.getElementById('diseaseInput');
+                const disease = diseaseInput.value.trim();
+                
+                if (disease && !patientDiseases.includes(disease)) {
+                    patientDiseases.push(disease);
+                    renderDiseaseTags();
+                    diseaseInput.value = '';
+                }
+            });
+            
+            // Enter key to add disease
+            document.getElementById('diseaseInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('addDiseaseBtn').click();
+                }
+            });
+            
+            // Render disease tags
+            function renderDiseaseTags() {
+                const diseaseTagsContainer = document.getElementById('diseaseTags');
+                
+                if (patientDiseases.length === 0) {
+                    diseaseTagsContainer.innerHTML = '<p class="text-muted">No diseases added</p>';
+                    return;
+                }
+                
+                let html = '';
+                patientDiseases.forEach((disease, index) => {
+                    html += `
+                        <div class="disease-tag">
+                            ${disease}
+                            <i class="bi bi-x ms-1" style="cursor: pointer;" data-index="${index}"></i>
+                        </div>`;
+                });
+                
+                diseaseTagsContainer.innerHTML = html;
+                
+                // Add event listeners to delete buttons
+                diseaseTagsContainer.querySelectorAll('.bi-x').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        patientDiseases.splice(index, 1);
+                        renderDiseaseTags();
+                    });
+                });
+            }
+            
             // Update patient medicines list
-            function updatePatientMedicinesList() {
+            function updatePatientMedicinesList(searchTerm = '') {
                 const patientMedicinesList = document.getElementById('patientMedicinesList');
                 
-                if (patientMedicines.length === 0) {
-                    patientMedicinesList.innerHTML = '<p class="text-muted text-center">No medicines added yet</p>';
+                let filteredMedicines = medicines;
+                if (searchTerm) {
+                    filteredMedicines = medicines.filter(medicine => 
+                        medicine.name.toLowerCase().includes(searchTerm) || 
+                        medicine.form.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (filteredMedicines.length === 0) {
+                    patientMedicinesList.innerHTML = '<p class="text-muted text-center">No medicines available</p>';
                     return;
                 }
                 
                 let html = '';
                 
-                patientMedicines.forEach((medicine, index) => {
+                filteredMedicines.forEach(medicine => {
                     html += `
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>${medicine.form} ${medicine.name} (${medicine.quantity})</div>
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-medicine-btn" data-index="${index}">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${medicine.id}" id="medicineCheck${medicine.id}">
+                            <label class="form-check-label" for="medicineCheck${medicine.id}">
+                                ${medicine.form ? medicine.form + ' ' : ''}${medicine.name} (${medicine.quantity})
+                            </label>
                         </div>`;
                 });
                 
                 patientMedicinesList.innerHTML = html;
-                
-                // Add event listeners to remove buttons
-                document.querySelectorAll('.remove-medicine-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        patientMedicines.splice(index, 1);
-                        updatePatientMedicinesList();
-                        showToast('Medicine removed');
-                    });
-                });
             }
+            
+            // Patient medicine search
+            document.getElementById('patientMedicineSearch').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                updatePatientMedicinesList(searchTerm);
+            });
+            
+            // Add custom medicine to patient
+            document.getElementById('addCustomMedicineBtn').addEventListener('click', function() {
+                const form = document.getElementById('customMedicineForm').value.trim();
+                const name = document.getElementById('customMedicineName').value.trim();
+                const quantity = document.getElementById('customMedicineQuantity').value.trim();
+                
+                if (!name) {
+                    showToast('Please enter medicine name', 'error');
+                    return;
+                }
+                
+                if (!quantity) {
+                    showToast('Please enter quantity', 'error');
+                    return;
+                }
+                
+                // Check if medicine already exists in the patient medicines list
+                const existingMedicine = medicines.find(m => 
+                    m.name.toLowerCase() === name.toLowerCase() && 
+                    m.form === form
+                );
+                
+                if (!existingMedicine) {
+                    // Add to main medicines list
+                    const medicine = {
+                        id: Date.now(),
+                        name: name,
+                        form: form,
+                        quantity: quantity,
+                        selected: false
+                    };
+                    
+                    medicines.push(medicine);
+                }
+                
+                // Update the patient medicines list
+                updatePatientMedicinesList();
+                
+                // Clear form
+                document.getElementById('customMedicineForm').value = '';
+                document.getElementById('customMedicineName').value = '';
+                document.getElementById('customMedicineQuantity').value = '';
+                
+                showToast('Medicine added to list');
+            });
             
             // Save patient
             savePatientBtn.addEventListener('click', function() {
@@ -1425,6 +1955,14 @@
                     return;
                 }
                 
+                // Get selected medicines
+                const selectedMedicineIds = [];
+                document.querySelectorAll('#patientMedicinesList input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedMedicineIds.push(parseInt(checkbox.value));
+                });
+                
+                const selectedMedicinesForPatient = medicines.filter(m => selectedMedicineIds.includes(m.id));
+                
                 const patient = {
                     id: Date.now(),
                     name: name,
@@ -1432,7 +1970,8 @@
                     gender: gender,
                     contact: contact,
                     address: address,
-                    medicines: [...patientMedicines]
+                    diseases: [...patientDiseases],
+                    medicines: selectedMedicinesForPatient
                 };
                 
                 patients.push(patient);
@@ -1465,44 +2004,26 @@
                 
                 filteredPatients.forEach(patient => {
                     html += `
-                        <div class="patient-card">
-                            <div class="patient-header" data-id="${patient.id}">
-                                <div class="patient-name">${patient.name}</div>
-                                <div>
-                                    <button class="btn btn-sm download-btn me-2" data-id="${patient.id}">
-                                        <i class="bi bi-download"></i> Download
+                        <div class="patient-summary" data-id="${patient.id}">
+                            <div class="patient-summary-name">${patient.name}</div>
+                            <div class="patient-summary-details">
+                                <span>${patient.age || 'N/A'} years</span>
+                                <div class="patient-actions">
+                                    <button class="btn btn-sm btn-primary view-btn" data-id="${patient.id}">
+                                        <i class="bi bi-eye"></i>
                                     </button>
-                                    <i class="bi bi-chevron-down collapse-icon"></i>
+                                    <button class="btn btn-sm btn-success download-btn" data-id="${patient.id}">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${patient.id}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="patient-details" id="patientDetails${patient.id}">
-                                <div class="patient-info-row">
-                                    <div class="patient-info-label">Age:</div>
-                                    <div>${patient.age || 'N/A'}</div>
-                                </div>
-                                <div class="patient-info-row">
-                                    <div class="patient-info-label">Gender:</div>
-                                    <div>${patient.gender || 'N/A'}</div>
-                                </div>
-                                <div class="patient-info-row">
-                                    <div class="patient-info-label">Contact:</div>
-                                    <div>${patient.contact || 'N/A'}</div>
-                                </div>
-                                <div class="patient-info-row">
-                                    <div class="patient-info-label">Address:</div>
-                                    <div>${patient.address || 'N/A'}</div>
-                                </div>
-                            </div>
-                            <div class="patient-medicines" id="patientMedicines${patient.id}">
-                                <div class="section-title">Medicines</div>
+                            <div class="patient-summary-medicines">
                                 ${patient.medicines.length > 0 ? 
-                                    patient.medicines.map(med => `
-                                        <div class="patient-medicine-item">
-                                            <div>${med.form} ${med.name}</div>
-                                            <div>${med.quantity}</div>
-                                        </div>
-                                    `).join('') : 
-                                    '<p class="text-muted">No medicines prescribed</p>'
+                                    `${patient.medicines.length} medicine${patient.medicines.length > 1 ? 's' : ''}` : 
+                                    'No medicines prescribed'
                                 }
                             </div>
                         </div>`;
@@ -1510,33 +2031,96 @@
                 
                 patientsContainer.innerHTML = html;
                 
-                // Add event listeners to patient headers
-                document.querySelectorAll('.patient-header').forEach(header => {
-                    header.addEventListener('click', function(e) {
-                        // Don't toggle if download button was clicked
-                        if (e.target.closest('.download-btn')) return;
-                        
-                        const patientId = this.getAttribute('data-id');
-                        const details = document.getElementById(`patientDetails${patientId}`);
-                        const medicines = document.getElementById(`patientMedicines${patientId}`);
-                        const icon = this.querySelector('.collapse-icon');
-                        
-                        details.classList.toggle('show');
-                        medicines.classList.toggle('show');
-                        icon.classList.toggle('rotated');
+                // Add event listeners
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const patientId = parseInt(this.getAttribute('data-id'));
+                        const patient = patients.find(p => p.id === patientId);
+                        if (patient) {
+                            showPatientDetails(patient);
+                        }
                     });
                 });
                 
-                // Add event listeners to download buttons
                 document.querySelectorAll('.download-btn').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
+                    btn.addEventListener('click', function() {
                         const patientId = parseInt(this.getAttribute('data-id'));
                         const patient = patients.find(p => p.id === patientId);
                         if (patient) {
                             downloadPrescription(patient);
                         }
                     });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const patientId = parseInt(this.getAttribute('data-id'));
+                        if (confirm('Are you sure you want to delete this patient?')) {
+                            patients = patients.filter(p => p.id !== patientId);
+                            renderPatients();
+                            showToast('Patient deleted successfully');
+                        }
+                    });
+                });
+            }
+            
+            // Show patient details
+            function showPatientDetails(patient) {
+                // Create modal
+                const modal = document.createElement('div');
+                modal.className = 'patient-detail-modal';
+                
+                const modalContent = `
+                    <div class="patient-detail-content">
+                        <div class="patient-detail-header">
+                            <h5 class="mb-0">${patient.name}</h5>
+                            <button type="button" class="btn-close btn-close-white" onclick="this.closest('.patient-detail-modal').remove()"></button>
+                        </div>
+                        <div class="patient-detail-body">
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Age:</div>
+                                <div>${patient.age || 'N/A'}</div>
+                            </div>
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Gender:</div>
+                                <div>${patient.gender || 'N/A'}</div>
+                            </div>
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Contact:</div>
+                                <div>${patient.contact || 'N/A'}</div>
+                            </div>
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Address:</div>
+                                <div>${patient.address || 'N/A'}</div>
+                            </div>
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Diseases:</div>
+                                <div>${patient.diseases && patient.diseases.length > 0 ? 
+                                    patient.diseases.map(d => `<span class="disease-tag">${d}</span>`).join('') : 
+                                    'None'
+                                }</div>
+                            </div>
+                            <div class="patient-detail-row">
+                                <div class="patient-detail-label">Medicines:</div>
+                                <div>${patient.medicines.length > 0 ? 
+                                    patient.medicines.map(med => `
+                                        <div>${med.form ? med.form + ' ' : ''}${med.name} - ${med.quantity}</div>
+                                    `).join('') : 
+                                    'No medicines prescribed'
+                                }</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                modal.innerHTML = modalContent;
+                document.body.appendChild(modal);
+                
+                // Close modal when clicking outside
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
                 });
             }
             
@@ -1573,7 +2157,7 @@
                         const medicineItem = document.createElement('div');
                         medicineItem.className = 'prescription-medicine';
                         medicineItem.innerHTML = `
-                            <div><strong>${medicine.form} ${medicine.name}</strong></div>
+                            <div><strong>${medicine.form ? medicine.form + ' ' : ''}${medicine.name}</strong></div>
                             <div>${medicine.quantity}</div>
                         `;
                         medicinesList.appendChild(medicineItem);
