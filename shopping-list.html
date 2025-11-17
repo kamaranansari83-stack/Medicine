@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --secondary-color: #f0f7ff;
+            --text-color: #333;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .shopping-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+        
+        .add-item-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+        }
+        
+        .list-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background-color: #229954;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .category-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            margin-right: 0.5rem;
+        }
+        
+        .category-tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .shopping-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .shopping-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .shopping-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .shopping-item.purchased {
+            opacity: 0.7;
+            background-color: #f9f9f9;
+        }
+        
+        .item-checkbox {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .shopping-item.purchased .item-name {
+            text-decoration: line-through;
+        }
+        
+        .item-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .item-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            transition: var(--transition);
+        }
+        
+        .item-action-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .item-action-btn.delete:hover {
+            color: #e74c3c;
+        }
+        
+        .list-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .summary-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .summary-stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+        
+        @media (max-width: 992px) {
+            .shopping-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .category-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                Shopping List
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="shopping-container">
+            <div class="add-item-container">
+                <h2 class="section-title">Add Item</h2>
+                <form id="addItemForm">
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="text" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemQuantity">Quantity</label>
+                        <input type="number" id="itemQuantity" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemCategory">Category</label>
+                        <select id="itemCategory">
+                            <option value="groceries">Groceries</option>
+                            <option value="produce">Produce</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="meat">Meat & Seafood</option>
+                            <option value="bakery">Bakery</option>
+                            <option value="frozen">Frozen Foods</option>
+                            <option value="household">Household</option>
+                            <option value="personal">Personal Care</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemPrice">Price (optional)</label>
+                        <input type="number" id="itemPrice" min="0" step="0.01">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Add to List</button>
+                </form>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-danger" id="clearPurchasedBtn" style="width: 100%;">Clear Purchased Items</button>
+                </div>
+            </div>
+            
+            <div class="list-container">
+                <h2 class="section-title">Shopping List</h2>
+                
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">All Items</button>
+                    <button class="category-tab" data-category="groceries">Groceries</button>
+                    <button class="category-tab" data-category="produce">Produce</button>
+                    <button class="category-tab" data-category="dairy">Dairy</button>
+                    <button class="category-tab" data-category="meat">Meat & Seafood</button>
+                    <button class="category-tab" data-category="bakery">Bakery</button>
+                    <button class="category-tab" data-category="frozen">Frozen Foods</button>
+                    <button class="category-tab" data-category="household">Household</button>
+                    <button class="category-tab" data-category="personal">Personal Care</button>
+                    <button class="category-tab" data-category="other">Other</button>
+                </div>
+                
+                <div class="shopping-list" id="shoppingList">
+                    <!-- Shopping items will be dynamically added here -->
+                </div>
+                
+                <div class="list-summary">
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <div class="stat-value" id="totalItems">0</div>
+                            <div class="stat-label">Total Items</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="stat-value" id="purchasedItems">0</div>
+                            <div class="stat-label">Purchased</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="stat-value" id="estimatedTotal">$0.00</div>
+                            <div class="stat-label">Estimated Total</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" id="shareListBtn">Share List</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // DOM elements
+        const addItemForm = document.getElementById('addItemForm');
+        const itemNameInput = document.getElementById('itemName');
+        const itemQuantityInput = document.getElementById('itemQuantity');
+        const itemCategorySelect = document.getElementById('itemCategory');
+        const itemPriceInput = document.getElementById('itemPrice');
+        const shoppingList = document.getElementById('shoppingList');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const totalItemsEl = document.getElementById('totalItems');
+        const purchasedItemsEl = document.getElementById('purchasedItems');
+        const estimatedTotalEl = document.getElementById('estimatedTotal');
+        const clearPurchasedBtn = document.getElementById('clearPurchasedBtn');
+        const shareListBtn = document.getElementById('shareListBtn');
+        const notification = document.getElementById('notification');
+        
+        // State
+        let shoppingItems = [];
+        let currentCategory = 'all';
+        
+        // Initialize the app
+        function init() {
+            loadShoppingItems();
+            setupEventListeners();
+            renderShoppingList();
+            updateSummary();
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Add item form
+            addItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addShoppingItem();
+            });
+            
+            // Category tabs
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.dataset.category;
+                    renderShoppingList();
+                });
+            });
+            
+            // Clear purchased items button
+            clearPurchasedBtn.addEventListener('click', clearPurchasedItems);
+            
+            // Share list button
+            shareListBtn.addEventListener('click', shareList);
+        }
+        
+        // Add shopping item
+        function addShoppingItem() {
+            const name = itemNameInput.value.trim();
+            const quantity = parseInt(itemQuantityInput.value);
+            const category = itemCategorySelect.value;
+            const price = parseFloat(itemPriceInput.value) || 0;
+            
+            if (!name) {
+                showNotification('Please enter an item name', 'error');
+                return;
+            }
+            
+            const newItem = {
+                id: Date.now(),
+                name,
+                quantity,
+                category,
+                price,
+                purchased: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            shoppingItems.push(newItem);
+            saveShoppingItems();
+            renderShoppingList();
+            updateSummary();
+            
+            // Reset form
+            itemNameInput.value = '';
+            itemQuantityInput.value = '1';
+            itemPriceInput.value = '';
+            
+            showNotification('Item added to list!');
+        }
+        
+        // Toggle item purchased status
+        function toggleItemPurchased(id) {
+            const item = shoppingItems.find(i => i.id === id);
+            if (item) {
+                item.purchased = !item.purchased;
+                saveShoppingItems();
+                renderShoppingList();
+                updateSummary();
+            }
+        }
+        
+        // Delete shopping item
+        function deleteShoppingItem(id) {
+            shoppingItems = shoppingItems.filter(i => i.id !== id);
+            saveShoppingItems();
+            renderShoppingList();
+            updateSummary();
+            showNotification('Item removed from list!');
+        }
+        
+        // Clear purchased items
+        function clearPurchasedItems() {
+            const purchasedCount = shoppingItems.filter(i => i.purchased).length;
+            
+            if (purchasedCount === 0) {
+                showNotification('No purchased items to clear', 'error');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to remove ${purchasedCount} purchased item(s)?`)) {
+                shoppingItems = shoppingItems.filter(i => !i.purchased);
+                saveShoppingItems();
+                renderShoppingList();
+                updateSummary();
+                showNotification('Purchased items cleared!');
+            }
+        }
+        
+        // Share list
+        function shareList() {
+            let listText = 'Shopping List:\n\n';
+            
+            const unpurchasedItems = shoppingItems.filter(i => !i.purchased);
+            
+            if (unpurchasedItems.length === 0) {
+                showNotification('No items to share', 'error');
+                return;
+            }
+            
+            // Group items by category
+            const itemsByCategory = {};
+            unpurchasedItems.forEach(item => {
+                if (!itemsByCategory[item.category]) {
+                    itemsByCategory[item.category] = [];
+                }
+                itemsByCategory[item.category].push(item);
+            });
+            
+            // Generate text
+            Object.keys(itemsByCategory).forEach(category => {
+                listText += `${category.charAt(0).toUpperCase() + category.slice(1)}:\n`;
+                itemsByCategory[category].forEach(item => {
+                    listText += `- ${item.name}`;
+                    if (item.quantity > 1) {
+                        listText += ` (${item.quantity})`;
+                    }
+                    if (item.price > 0) {
+                        listText += ` - $${(item.price * item.quantity).toFixed(2)}`;
+                    }
+                    listText += '\n';
+                });
+                listText += '\n';
+            });
+            
+            // Calculate total
+            const total = unpurchasedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            listText += `Estimated Total: $${total.toFixed(2)}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(listText).then(() => {
+                showNotification('List copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy list: ', err);
+                showNotification('Failed to copy list', 'error');
+            });
+        }
+        
+        // Render shopping list
+        function renderShoppingList() {
+            const filteredItems = currentCategory === 'all' 
+                ? shoppingItems 
+                : shoppingItems.filter(i => i.category === currentCategory);
+            
+            if (filteredItems.length === 0) {
+                shoppingList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>No items in this category</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort items: unpurchased first, then by category
+            filteredItems.sort((a, b) => {
+                if (a.purchased !== b.purchased) {
+                    return a.purchased ? 1 : -1;
+                }
+                return a.name.localeCompare(b.name);
+            });
+            
+            shoppingList.innerHTML = '';
+            
+            filteredItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `shopping-item ${item.purchased ? 'purchased' : ''}`;
+                
+                itemElement.innerHTML = `
+                    <input type="checkbox" class="item-checkbox" ${item.purchased ? 'checked' : ''}>
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-meta">
+                            <div class="item-quantity">Qty: ${item.quantity}</div>
+                            <div class="item-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</div>
+                            ${item.price > 0 ? `<div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="item-action-btn delete" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Add event listeners
+                const checkbox = itemElement.querySelector('.item-checkbox');
+                checkbox.addEventListener('change', () => toggleItemPurchased(item.id));
+                
+                const deleteBtn = itemElement.querySelector('.delete');
+                deleteBtn.addEventListener('click', () => deleteShoppingItem(item.id));
+                
+                shoppingList.appendChild(itemElement);
+            });
+        }
+        
+        // Update summary
+        function updateSummary() {
+            const totalItems = shoppingItems.length;
+            const purchasedItems = shoppingItems.filter(i => i.purchased).length;
+            const estimatedTotal = shoppingItems.reduce((sum, item) => {
+                if (!item.purchased) {
+                    return sum + (item.price * item.quantity);
+                }
+                return sum;
+            }, 0);
+            
+            totalItemsEl.textContent = totalItems;
+            purchasedItemsEl.textContent = purchasedItems;
+            estimatedTotalEl.textContent = `$${estimatedTotal.toFixed(2)}`;
+        }
+        
+        // Save shopping items to localStorage
+        function saveShoppingItems() {
+            localStorage.setItem('shoppingItems', JSON.stringify(shoppingItems));
+        }
+        
+        // Load shopping items from localStorage
+        function loadShoppingItems() {
+            const savedItems = localStorage.getItem('shoppingItems');
+            if (savedItems) {
+                shoppingItems = JSON.parse(savedItems);
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'error' ? '#e74c3c' : 'var(--primary-color)';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>

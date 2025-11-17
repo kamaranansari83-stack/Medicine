@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Timer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #16a085;
+            --secondary-color: #f0f7ff;
+            --text-color: #333;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .timer-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .timer-display {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 2rem 0;
+        }
+        
+        .timer-mode {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background-color: #138d75;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .settings-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+        
+        .settings-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .timer-settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .stats-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .stats-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .progress-ring {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 2rem;
+        }
+        
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            fill: transparent;
+            stroke: #e6e6e6;
+            stroke-width: 10;
+        }
+        
+        .progress-ring-circle-progress {
+            fill: transparent;
+            stroke: var(--primary-color);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.35s;
+        }
+        
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .timer-settings {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                Study Timer
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="timer-container">
+            <div class="timer-mode" id="timerMode">Pomodoro</div>
+            
+            <div class="progress-ring">
+                <svg width="250" height="250">
+                    <circle class="progress-ring-circle" cx="125" cy="125" r="110"></circle>
+                    <circle class="progress-ring-circle-progress" id="progressCircle" cx="125" cy="125" r="110"></circle>
+                </svg>
+                <div class="progress-ring-text" id="timerDisplay">25:00</div>
+            </div>
+            
+            <div class="timer-controls">
+                <button class="btn" id="startBtn">Start</button>
+                <button class="btn btn-secondary" id="pauseBtn">Pause</button>
+                <button class="btn btn-danger" id="resetBtn">Reset</button>
+            </div>
+        </div>
+        
+        <div class="settings-container">
+            <h2 class="settings-title">Timer Settings</h2>
+            <div class="timer-settings">
+                <div class="form-group">
+                    <label for="pomodoroTime">Pomodoro (minutes)</label>
+                    <input type="number" id="pomodoroTime" min="1" max="60" value="25">
+                </div>
+                <div class="form-group">
+                    <label for="shortBreakTime">Short Break (minutes)</label>
+                    <input type="number" id="shortBreakTime" min="1" max="30" value="5">
+                </div>
+                <div class="form-group">
+                    <label for="longBreakTime">Long Break (minutes)</label>
+                    <input type="number" id="longBreakTime" min="1" max="60" value="15">
+                </div>
+                <div class="form-group">
+                    <label for="sessionsUntilLongBreak">Sessions Until Long Break</label>
+                    <input type="number" id="sessionsUntilLongBreak" min="1" max="10" value="4">
+                </div>
+            </div>
+            <button class="btn" id="saveSettingsBtn" style="margin-top: 1rem;">Save Settings</button>
+        </div>
+        
+        <div class="stats-container">
+            <h2 class="stats-title">Today's Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="pomodoroCount">0</div>
+                    <div class="stat-label">Pomodoros Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalTime">0</div>
+                    <div class="stat-label">Total Minutes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="shortBreakCount">0</div>
+                    <div class="stat-label">Short Breaks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="longBreakCount">0</div>
+                    <div class="stat-label">Long Breaks</div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="resetStatsBtn" style="margin-top: 1rem;">Reset Stats</button>
+        </div>
+    </main>
+    
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // DOM elements
+        const timerMode = document.getElementById('timerMode');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const progressCircle = document.getElementById('progressCircle');
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const pomodoroTimeInput = document.getElementById('pomodoroTime');
+        const shortBreakTimeInput = document.getElementById('shortBreakTime');
+        const longBreakTimeInput = document.getElementById('longBreakTime');
+        const sessionsUntilLongBreakInput = document.getElementById('sessionsUntilLongBreak');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const pomodoroCountEl = document.getElementById('pomodoroCount');
+        const totalTimeEl = document.getElementById('totalTime');
+        const shortBreakCountEl = document.getElementById('shortBreakCount');
+        const longBreakCountEl = document.getElementById('longBreakCount');
+        const resetStatsBtn = document.getElementById('resetStatsBtn');
+        const notification = document.getElementById('notification');
+        
+        // Timer state
+        let timerInterval = null;
+        let timeLeft = 25 * 60; // Default 25 minutes in seconds
+        let totalTimeInMode = 25 * 60; // Total time for current mode
+        let isRunning = false;
+        let currentMode = 'pomodoro'; // 'pomodoro', 'shortBreak', 'longBreak'
+        let sessionCount = 0;
+        
+        // Statistics
+        let stats = {
+            pomodoroCount: 0,
+            totalTime: 0,
+            shortBreakCount: 0,
+            longBreakCount: 0
+        };
+        
+        // Progress ring setup
+        const radius = 110;
+        const circumference = 2 * Math.PI * radius;
+        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        progressCircle.style.strokeDashoffset = circumference;
+        
+        // Initialize the app
+        function init() {
+            loadSettings();
+            loadStats();
+            setupEventListeners();
+            updateDisplay();
+            updateStatsDisplay();
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            resetBtn.addEventListener('click', resetTimer);
+            saveSettingsBtn.addEventListener('click', saveSettings);
+            resetStatsBtn.addEventListener('click', resetStats);
+        }
+        
+        // Start timer
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(updateTimer, 1000);
+                showNotification('Timer started!');
+            }
+        }
+        
+        // Pause timer
+        function pauseTimer() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(timerInterval);
+                showNotification('Timer paused!');
+            }
+        }
+        
+        // Reset timer
+        function resetTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            
+            switch (currentMode) {
+                case 'pomodoro':
+                    timeLeft = pomodoroTimeInput.value * 60;
+                    break;
+                case 'shortBreak':
+                    timeLeft = shortBreakTimeInput.value * 60;
+                    break;
+                case 'longBreak':
+                    timeLeft = longBreakTimeInput.value * 60;
+                    break;
+            }
+            
+            totalTimeInMode = timeLeft;
+            updateDisplay();
+            showNotification('Timer reset!');
+        }
+        
+        // Update timer
+        function updateTimer() {
+            timeLeft--;
+            
+            if (timeLeft < 0) {
+                // Timer completed
+                clearInterval(timerInterval);
+                isRunning = false;
+                
+                // Update stats
+                switch (currentMode) {
+                    case 'pomodoro':
+                        stats.pomodoroCount++;
+                        stats.totalTime += parseInt(pomodoroTimeInput.value);
+                        sessionCount++;
+                        
+                        // Check if it's time for a long break
+                        if (sessionCount % parseInt(sessionsUntilLongBreakInput.value) === 0) {
+                            currentMode = 'longBreak';
+                            timeLeft = longBreakTimeInput.value * 60;
+                            showNotification('Pomodoro completed! Time for a long break.');
+                        } else {
+                            currentMode = 'shortBreak';
+                            timeLeft = shortBreakTimeInput.value * 60;
+                            showNotification('Pomodoro completed! Time for a short break.');
+                        }
+                        break;
+                    case 'shortBreak':
+                        stats.shortBreakCount++;
+                        currentMode = 'pomodoro';
+                        timeLeft = pomodoroTimeInput.value * 60;
+                        showNotification('Break over! Time to focus.');
+                        break;
+                    case 'longBreak':
+                        stats.longBreakCount++;
+                        currentMode = 'pomodoro';
+                        timeLeft = pomodoroTimeInput.value * 60;
+                        showNotification('Break over! Time to focus.');
+                        break;
+                }
+                
+                totalTimeInMode = timeLeft;
+                saveStats();
+                updateStatsDisplay();
+            }
+            
+            updateDisplay();
+        }
+        
+        // Update display
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update timer mode display
+            switch (currentMode) {
+                case 'pomodoro':
+                    timerMode.textContent = 'Pomodoro';
+                    break;
+                case 'shortBreak':
+                    timerMode.textContent = 'Short Break';
+                    break;
+                case 'longBreak':
+                    timerMode.textContent = 'Long Break';
+                    break;
+            }
+            
+            // Update progress ring
+            const progress = (totalTimeInMode - timeLeft) / totalTimeInMode;
+            const offset = circumference - progress * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        }
+        
+        // Update stats display
+        function updateStatsDisplay() {
+            pomodoroCountEl.textContent = stats.pomodoroCount;
+            totalTimeEl.textContent = stats.totalTime;
+            shortBreakCountEl.textContent = stats.shortBreakCount;
+            longBreakCountEl.textContent = stats.longBreakCount;
+        }
+        
+        // Save settings
+        function saveSettings() {
+            const settings = {
+                pomodoroTime: pomodoroTimeInput.value,
+                shortBreakTime: shortBreakTimeInput.value,
+                longBreakTime: longBreakTimeInput.value,
+                sessionsUntilLongBreak: sessionsUntilLongBreakInput.value
+            };
+            
+            localStorage.setItem('studyTimerSettings', JSON.stringify(settings));
+            
+            // Reset timer with new settings
+            resetTimer();
+            
+            showNotification('Settings saved successfully!');
+        }
+        
+        // Load settings
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('studyTimerSettings');
+            
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                pomodoroTimeInput.value = settings.pomodoroTime;
+                shortBreakTimeInput.value = settings.shortBreakTime;
+                longBreakTimeInput.value = settings.longBreakTime;
+                sessionsUntilLongBreakInput.value = settings.sessionsUntilLongBreak;
+            }
+            
+            // Set initial time based on settings
+            timeLeft = pomodoroTimeInput.value * 60;
+            totalTimeInMode = timeLeft;
+        }
+        
+        // Save stats
+        function saveStats() {
+            // Get today's date as a string
+            const today = new Date().toDateString();
+            
+            // Check if there's already data for today
+            const savedStats = localStorage.getItem('studyTimerStats');
+            let allStats = {};
+            
+            if (savedStats) {
+                allStats = JSON.parse(savedStats);
+            }
+            
+            // Update today's stats
+            allStats[today] = stats;
+            
+            // Save to localStorage
+            localStorage.setItem('studyTimerStats', JSON.stringify(allStats));
+        }
+        
+        // Load stats
+        function loadStats() {
+            // Get today's date as a string
+            const today = new Date().toDateString();
+            
+            // Check if there's data for today
+            const savedStats = localStorage.getItem('studyTimerStats');
+            
+            if (savedStats) {
+                const allStats = JSON.parse(savedStats);
+                
+                if (allStats[today]) {
+                    stats = allStats[today];
+                }
+            }
+        }
+        
+        // Reset stats
+        function resetStats() {
+            if (confirm('Are you sure you want to reset today\'s statistics?')) {
+                stats = {
+                    pomodoroCount: 0,
+                    totalTime: 0,
+                    shortBreakCount: 0,
+                    longBreakCount: 0
+                };
+                
+                saveStats();
+                updateStatsDisplay();
+                showNotification('Statistics reset successfully!');
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
